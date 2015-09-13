@@ -95,9 +95,9 @@
     <orderEntry type="library" exported="" name="android-support-v4" level="project" />
     <orderEntry type="library" exported="" name="ocv-natives" level="project" />
     <orderEntry type="library" exported="" name="analytics" level="project" />
-    <orderEntry type="library" exported="" name="ftc" level="project" />
     <orderEntry type="library" exported="" name="javadeck-all-0.1-alpha-1" level="project" />
     <orderEntry type="library" exported="" name="netty-all-4.0.30.Final" level="project" />
+    <orderEntry type="library" exported="" name="FtcCommon-release-" level="project" />
     <orderEntry type="module" module-name="OpModeLibrary" exported="" />
     <orderEntry type="module" module-name="FtcXtensible" exported="" />
   </component>

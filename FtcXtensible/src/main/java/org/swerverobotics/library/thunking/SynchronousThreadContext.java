@@ -1,6 +1,5 @@
 package org.swerverobotics.library.thunking;
 
-import com.qualcomm.ftccommon.BuildConfig;
 import junit.framework.Assert;
 import org.swerverobotics.library.IAction;
 
@@ -80,7 +79,7 @@ public class SynchronousThreadContext
         {
         synchronized (this.lock)
             {
-            if (BuildConfig.DEBUG) Assert.assertEquals(true, this.dispatchedThunkCount > 0);
+            //if (BuildConfig.DEBUG) Assert.assertEquals(true, this.dispatchedThunkCount > 0);
 
             if (--this.dispatchedThunkCount == 0)
                 {

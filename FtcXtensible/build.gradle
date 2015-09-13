@@ -36,7 +36,6 @@ retrolambda {
 dependencies {
     compile(name: 'rcore', ext: 'jar')
     compile(name: 'mr', ext: 'jar')
-    compile(name: 'ftc', ext: 'jar')
     compile(name: 'ocv-natives', ext: 'jar')
     compile(name: 'ocv', ext: 'jar')
     compile(name: 'wp2p', ext: 'jar')

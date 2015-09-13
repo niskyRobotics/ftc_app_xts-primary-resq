@@ -61,6 +61,11 @@
                 android:label="@string/settings_activity">
         </activity>
 
+        <activity
+                android:name="com.qualcomm.ftccommon.FtcWifiChannelSelectorActivity"
+                android:label="Wifi Channel Selector">
+        </activity>
+
         <service
                 android:name="com.qualcomm.ftccommon.FtcRobotControllerService"
                 android:enabled="true"/>

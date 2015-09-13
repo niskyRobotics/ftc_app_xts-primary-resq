@@ -30,7 +30,7 @@
 
 package org.ftc.opmodes;
 
-import com.qualcomm.ftccommon.DbgLog;
+//import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CompassSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -79,7 +79,7 @@ public class CompassCalibration extends OpMode {
             if (keepTurning) {
 
                 telemetry.addData("Compass", "Calibration mode. Turning the robot...");
-                DbgLog.msg("Calibration mode. Turning the robot...");
+                //DbgLog.msg("Calibration mode. Turning the robot...");
 
                 // rotate the robot towards our goal direction
                 motorRight.setPower(-MOTOR_POWER);
@@ -93,7 +93,7 @@ public class CompassCalibration extends OpMode {
             } else if (returnToMeasurementMode) {
 
                 telemetry.addData("Compass", "Returning to measurement mode");
-                DbgLog.msg("Returning to measurement mode");
+                //DbgLog.msg("Returning to measurement mode");
                 motorRight.setPower(0.0);
                 motorLeft.setPower(0.0);
 
@@ -113,9 +113,9 @@ public class CompassCalibration extends OpMode {
                 telemetry.addData("Compass", msg);
 
                 if (compass.calibrationFailed()) {
-                    DbgLog.error("Calibration failed and needs to be re-run");
+                    //DbgLog.error("Calibration failed and needs to be re-run");
                 } else {
-                    DbgLog.msg(msg);
+                    //DbgLog.msg(msg);
                 }
 
             }

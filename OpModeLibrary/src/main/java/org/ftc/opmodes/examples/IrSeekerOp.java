@@ -30,7 +30,7 @@
 
 package org.ftc.opmodes.examples;
 
-import com.qualcomm.ftccommon.DbgLog;
+//import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IrSeekerSensor;
@@ -109,6 +109,6 @@ public class IrSeekerOp extends OpMode {
         telemetry.addData("angle", angle);
         telemetry.addData("strength", strength);
 
-        DbgLog.msg(irSeeker.toString());
+        //DbgLog.msg(irSeeker.toString());
     }
 }
