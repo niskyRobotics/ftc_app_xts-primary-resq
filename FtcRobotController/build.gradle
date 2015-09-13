@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion = 'Google Inc.:Google APIs:19'
+    compileSdkVersion 19
     buildToolsVersion = '19.1.0'
 
     defaultConfig {
@@ -22,11 +22,12 @@ repositories {
 
 dependencies {
     compile(name: 'd2xx', ext: 'jar')
-    compile(name: 'RobotCore-release', ext: 'aar')
-    compile(name: 'ModernRobotics-release', ext: 'aar')
-    compile(name: 'FtcCommon-release', ext: 'aar')
-    compile(name: 'WirelessP2p-release', ext: 'aar')
-    compile(name: 'Analytics-release', ext: 'aar')
+    compile(name: 'rcore', ext: 'jar')
+    compile(name: 'mr', ext: 'jar')
+    compile(name: 'ftc', ext: 'jar')
+    compile(name: 'wp2p', ext: 'jar')
+    compile(name: 'analytics', ext: 'jar')
+    compile(name: 'javadeck-all-0.1-alpha-1', ext: 'jar')
     compile files('libs/android-support-v4.jar')
     compile files('libs/netty-all-4.0.30.Final.jar')
     compile 'com.google.guava:guava:19.0-rc1'

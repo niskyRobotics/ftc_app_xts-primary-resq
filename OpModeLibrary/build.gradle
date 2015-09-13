@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile(name: 'rcore', ext: 'jar')
+    compile(name: 'mr', ext: 'jar')
+    compile(name: 'ftc', ext: 'jar')
+    compile(name: 'wp2p', ext: 'jar')
+    compile(name: 'analytics', ext: 'jar')
+    compile(name: 'javadeck-all-0.1-alpha-1', ext: 'jar')
+    compile project(':FtcXtensible')
+}

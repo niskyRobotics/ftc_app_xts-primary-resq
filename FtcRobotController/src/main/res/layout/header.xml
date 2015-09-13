@@ -7,7 +7,7 @@
     android:paddingRight="8dp"
     android:paddingTop="2dp"
     android:paddingBottom="2dp"
-    android:background="@color/medium_red_background"
+    android:background="@color/light_qcom_blue"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -17,7 +17,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Active Configuration File:"
-        android:textColor="@color/white"
         android:layout_weight="1"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -25,7 +24,7 @@
         android:id="@+id/active_filename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>
+<!-- From: file:/local/mnt/workspace/jenkins-slave/workspace/FTC_External_Apps_Package/First/lib/FtcCommon/src/main/res/layout/header.xml -->

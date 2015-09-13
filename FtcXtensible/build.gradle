@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+apply plugin: 'me.tatarka.retrolambda'
+
+retrolambda {
+    javaVersion JavaVersion.VERSION_1_7
+    oldJdk '/usr/lib/jvm/java-7-openjdk-amd64'
+}
+dependencies {
+    compile(name: 'rcore', ext: 'jar')
+    compile(name: 'mr', ext: 'jar')
+    compile(name: 'ftc', ext: 'jar')
+    compile(name: 'wp2p', ext: 'jar')
+    compile(name: 'analytics', ext: 'jar')
+    compile(name: 'javadeck-all-0.1-alpha-1', ext: 'jar')
+    compile files('libs/netty-all-4.0.30.Final.jar')
+    compile 'com.google.guava:guava:19.0-rc1'
+    compile 'com.google.code.gson:gson:2.3.1'
+}
