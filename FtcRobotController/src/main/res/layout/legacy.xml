@@ -125,12 +125,12 @@
 
             <!-- ****************************************************** Port 0 ******************************************************-->
             <TableRow
-                android:id="@+id/row_port5"
+                android:id="@+id/row_port0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dip" >
                 <TextView
-                    android:id="@+id/port5"
+                    android:id="@+id/port0"
                     android:textStyle="bold"
                     android:textSize="22sp"
                     android:paddingRight="5dp"
@@ -165,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dip" >
                 <TextView
-                    android:id="@+id/port7"
+                    android:id="@+id/port1"
                     android:textStyle="bold"
                     android:textSize="22sp"
                     android:paddingRight="5dp"
@@ -193,13 +193,13 @@
 
             <!-- ****************************************************** Port 2 ******************************************************-->
             <TableRow
-                android:id="@+id/row_port5"
+                android:id="@+id/row_port2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dip" >
 
                 <TextView
-                    android:id="@+id/port5"
+                    android:id="@+id/port2"
                     android:textStyle="bold"
                     android:textSize="22sp"
                     android:paddingRight="5dp"
