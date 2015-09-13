@@ -131,6 +131,11 @@ public abstract class SynchronousOpMode extends OpMode implements IThunker
     // start(), loop(), and stop()
     //----------------------------------------------------------------------------------------------
 
+    public void init(){
+        start(); // TODO test
+    }
+
+
     /**
      * The robot controller runtime calls start() when the OpMode is started.
      */

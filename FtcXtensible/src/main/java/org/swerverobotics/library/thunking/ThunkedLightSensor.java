@@ -32,13 +32,23 @@ public class ThunkedLightSensor extends LightSensor
     // LightSensor
     //----------------------------------------------------------------------------------------------
 
-    @Override public double getLightLevel()
+    @Override public double getLightDetected()
         {
         return (new ResultableThunk<Double>()
             {
             @Override protected void actionOnLoopThread()
                 {
-                this.result = target.getLightLevel();
+                this.result = target.getLightDetected();
+                }
+            }).doReadOperation();
+        }
+        @Override public int getLightDetectedRaw()
+        {
+            return (new ResultableThunk<Integer>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getLightDetectedRaw();
                 }
             }).doReadOperation();
         }
@@ -64,4 +74,48 @@ public class ThunkedLightSensor extends LightSensor
                 }
             }).doReadOperation();
         }
+        @Override
+        public String getDeviceName() {
+            return (new ResultableThunk<String>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getDeviceName();
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public String getConnectionInfo() {
+            return (new ResultableThunk<String>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getConnectionInfo();
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public int getVersion() {
+            return (new ResultableThunk<Integer>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getVersion();
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public void close() {
+            new ResultableThunk<String>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    target.close();
+                }
+            }.doWriteOperation();
+        }
     }
+

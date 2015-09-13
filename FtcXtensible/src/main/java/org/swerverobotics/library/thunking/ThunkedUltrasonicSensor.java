@@ -53,6 +53,48 @@ public class ThunkedUltrasonicSensor extends UltrasonicSensor
                 }
             }).doReadOperation();
         }
+        @Override
+        public String getDeviceName() {
+            return (new ResultableThunk<String>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getDeviceName();
+                }
+            }).doReadOperation();
+        }
 
+        @Override
+        public String getConnectionInfo() {
+            return (new ResultableThunk<String>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getConnectionInfo();
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public int getVersion() {
+            return (new ResultableThunk<Integer>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getVersion();
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public void close() {
+            new ResultableThunk<String>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    target.close();
+                }
+            }.doWriteOperation();
+        }
 
     }

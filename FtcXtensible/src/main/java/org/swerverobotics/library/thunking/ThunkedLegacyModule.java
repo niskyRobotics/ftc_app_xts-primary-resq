@@ -2,6 +2,8 @@ package org.swerverobotics.library.thunking;
 
 import com.qualcomm.robotcore.hardware.*;
 
+import java.util.concurrent.locks.Lock;
+
 public class ThunkedLegacyModule implements LegacyModule
     {
     //----------------------------------------------------------------------------------------------
@@ -40,7 +42,7 @@ public class ThunkedLegacyModule implements LegacyModule
             }).doWriteOperation();
         }
 
-    @Override public void enableNxtI2cWriteMode(final int physicalPort, final int i2cAddress, final int memAddress, final byte[] initialValues)
+    @Override public void enableNxtI2cWriteMode(final int physicalPort, final int i2cAddress, final int memAddress, final int initialValues)
         {
         (new NonwaitingThunk()
             {
@@ -51,13 +53,13 @@ public class ThunkedLegacyModule implements LegacyModule
             }).doWriteOperation();
         }
 
-    @Override public void enableAnalogReadMode(final int physicalPort, final int i2cAddress)
+    @Override public void enableAnalogReadMode(final int physicalPort)
         {
         (new NonwaitingThunk()
             {
             @Override protected void actionOnLoopThread()
                 {
-                target.enableAnalogReadMode(physicalPort, i2cAddress);
+                target.enableAnalogReadMode(physicalPort);
                 }
             }).doWriteOperation();
         }
@@ -84,27 +86,27 @@ public class ThunkedLegacyModule implements LegacyModule
             }).doWriteOperation();
         }
 
-    @Override public byte[] readLegacyModuleCache(final int physicalPort)
-        {
-        return (new ResultableThunk<byte[]>()
-            {
-            @Override protected void actionOnLoopThread()
-                {
-                this.result = target.readLegacyModuleCache(physicalPort);
-                }
-            }).doReadOperation();
-        }
-
-    @Override public void writeLegacyModuleCache(final int physicalPort, final byte[] data)
-        {
-        (new NonwaitingThunk()
-            {
-            @Override protected void actionOnLoopThread()
-                {
-                target.writeLegacyModuleCache(physicalPort, data);
-                }
-            }).doWriteOperation();
-        }
+//    @Override public byte[] readLegacyModuleCache(final int physicalPort)
+//        {
+//        return (new ResultableThunk<byte[]>()
+//            {
+//            @Override protected void actionOnLoopThread()
+//                {
+//                this.result = target.readLegacyModuleCache(physicalPort);
+//                }
+//            }).doReadOperation();
+//        }
+//
+//    @Override public void writeLegacyModuleCache(final int physicalPort, final byte[] data)
+//        {
+//        (new NonwaitingThunk()
+//            {
+//            @Override protected void actionOnLoopThread()
+//                {
+//                target.writeLegacyModuleCache(physicalPort, data);
+//                }
+//            }).doWriteOperation();
+//        }
 
     @Override public byte[] readAnalog(final int physicalPort)
         {
@@ -117,25 +119,206 @@ public class ThunkedLegacyModule implements LegacyModule
             }).doReadOperation();
         }
 
-    @Override public boolean isPortReady(final int physicalPort)
+        @Override
+        public Lock getI2cReadCacheLock(int i) {
+            return (new ResultableThunk<Lock>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getI2cReadCacheLock(i);
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public Lock getI2cWriteCacheLock(int i) {
+            return (new ResultableThunk<Lock>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getI2cWriteCacheLock(i);
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public byte[] getI2cReadCache(int i) {
+            return (new ResultableThunk<byte[]>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getI2cReadCache(i);
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public byte[] getI2cWriteCache(int i) {
+            return (new ResultableThunk<byte[]>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getI2cWriteCache(i);
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public void setNxtI2cPortActionFlag(int i) {
+            (new ResultableThunk<byte[]>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    target.setNxtI2cPortActionFlag(i);
+                }
+            }).doWriteOperation();
+        }
+
+        @Override
+        public boolean isNxtI2cPortActionFlagSet(int i) {
+            return (new ResultableThunk<Boolean>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.isNxtI2cPortActionFlagSet(i);
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public void readI2cCacheFromModule(int i) {
+            (new ResultableThunk<byte[]>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    target.readI2cCacheFromModule(i);
+                }
+            }).doWriteOperation();
+        }
+
+        @Override
+        public void writeI2cCacheToModule(int i) {
+            (new ResultableThunk<byte[]>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    target.writeI2cCacheToModule(i);
+                }
+            }).doWriteOperation();
+        }
+
+        @Override
+        public void writeI2cPortFlagOnlyToModule(int i) {
+            (new ResultableThunk<byte[]>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    target.writeI2cPortFlagOnlyToModule(i);
+                }
+            }).doWriteOperation();
+        }
+
+        @Override
+        public boolean isI2cPortInReadMode(int i) {
+            return (new ResultableThunk<Boolean>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.isI2cPortInReadMode(i);
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public boolean isI2cPortInWriteMode(int i) {
+            return (new ResultableThunk<Boolean>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.isI2cPortInWriteMode(i);
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public void registerForPortReadyCallback(PortReadyCallback portReadyCallback, int i) {
+            (new ResultableThunk<byte[]>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    target.registerForPortReadyCallback(portReadyCallback, i);
+                }
+            }).doWriteOperation();
+        }
+
+        @Override
+        public void deregisterForPortReadyCallback(int i) {
+            (new ResultableThunk<byte[]>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    target.deregisterForPortReadyCallback(i);
+                }
+            }).doWriteOperation();
+        }
+
+        @Override public boolean isI2cPortReady(final int physicalPort)
         {
         return (new ResultableThunk<Boolean>()
             {
             @Override protected void actionOnLoopThread()
                 {
-                this.result = target.isPortReady(physicalPort);
+                this.result = target.isI2cPortReady(physicalPort);
                 }
             }).doReadOperation();
         }
 
-    @Override public void close()
-        {
-        (new NonwaitingThunk()
+
+
+
+
+
+        @Override
+        public String getDeviceName() {
+            return (new ResultableThunk<String>()
             {
-            @Override protected void actionOnLoopThread()
+                @Override protected void actionOnLoopThread()
                 {
-                target.close();
+                    this.result = target.getDeviceName();
                 }
-            }).doWriteOperation();
+            }).doReadOperation();
+        }
+
+        @Override
+        public String getConnectionInfo() {
+            return (new ResultableThunk<String>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getConnectionInfo();
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public int getVersion() {
+            return (new ResultableThunk<Integer>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getVersion();
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public void close() {
+            new ResultableThunk<String>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    target.close();
+                }
+            }.doWriteOperation();
         }
     }

@@ -1,6 +1,6 @@
 package org.swerverobotics.library.thunking;
 
-import com.qualcomm.ftcrobotcontroller.BuildConfig;
+import com.qualcomm.ftccommon.BuildConfig;
 import junit.framework.Assert;
 import org.swerverobotics.library.IAction;
 
