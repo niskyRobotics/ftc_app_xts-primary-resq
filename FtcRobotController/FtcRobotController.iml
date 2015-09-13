@@ -84,14 +84,14 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="analytics" level="project" />
     <orderEntry type="library" exported="" name="d2xx" level="project" />
+    <orderEntry type="library" exported="" name="analytics" level="project" />
     <orderEntry type="library" exported="" name="wp2p" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
-    <orderEntry type="library" exported="" name="rcore" level="project" />
     <orderEntry type="library" exported="" name="ftc" level="project" />
-    <orderEntry type="library" exported="" name="guava-19.0-rc1" level="project" />
+    <orderEntry type="library" exported="" name="rcore" level="project" />
     <orderEntry type="library" exported="" name="mr" level="project" />
+    <orderEntry type="library" exported="" name="guava-19.0-rc1" level="project" />
     <orderEntry type="library" exported="" name="android-support-v4" level="project" />
     <orderEntry type="library" exported="" name="javadeck-all-0.1-alpha-1" level="project" />
     <orderEntry type="library" exported="" name="netty-all-4.0.30.Final" level="project" />

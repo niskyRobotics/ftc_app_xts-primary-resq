@@ -1,2 +1,2 @@
-include ':FtcRobotController', 'FtcXtensible', 'OpModeLibrary'
+include ':FtcRobotController', 'FtcXtensible', 'OpModeLibrary', 'FtcXtensible:opencv'
 // FTC Apps
