@@ -13,6 +13,9 @@
             android:name="android.permission.CHANGE_WIFI_STATE"
             android:required="true"/>
     <uses-permission
+            android:name="android.permission.CAMERA"
+            android:required="true"/>
+    <uses-permission
             android:name="android.permission.ACCESS_NETWORK_STATE"
             android:required="true"/>
     <uses-permission
@@ -31,6 +34,7 @@
             android:name="android.permission.WRITE_SETTINGS"
             android:required="true"/>
 
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
     <uses-feature android:name="android.hardware.usb.accessory"/>
 
     <application
@@ -55,6 +59,15 @@
             <meta-data
                     android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                     android:resource="@xml/device_filter"/>
+        </activity>
+        <activity
+                android:name="com.qualcomm.ftcrobotcontroller.OpenCvHelperTestActivity"
+                android:label="FTC6460 OpenCV helper test">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
                 android:name="com.qualcomm.ftccommon.FtcRobotControllerSettingsActivity"

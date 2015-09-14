@@ -24,7 +24,9 @@ public abstract class FtcBaseOpMode extends SynchronousOpMode implements Maintai
 
     protected FtcPeripheralsFactory peripheralFactory = new FtcPeripheralsFactory(super.hardwareMap, this);
 
+    {
 
+    }
 
     @Override
     public void accept(Maintainable m) {
