@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dummy_string">This string is used to prevent the issue where no R.txt is generated.</string>
+
+</resources>

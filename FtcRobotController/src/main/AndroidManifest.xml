@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.qualcomm.ftcrobotcontroller"
+          android:name="android.support.multidex.MultiDexApplication"
           android:versionCode="1"
           android:versionName="1.0">
 
@@ -62,10 +63,10 @@
         </activity>
         <activity
                 android:name="com.qualcomm.ftcrobotcontroller.OpenCvHelperTestActivity"
-                android:label="FTC6460 OpenCV helper test">
+                android:label="FTC6460 OpenCV helper test"
+                android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
