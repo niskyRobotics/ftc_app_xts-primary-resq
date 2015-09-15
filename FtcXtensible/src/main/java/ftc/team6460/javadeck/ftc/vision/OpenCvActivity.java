@@ -175,7 +175,7 @@ class FaceView extends View implements Camera.PreviewCallback {
                 if (arrPending != null) {
                     if (arrData == null || arrData.length != arrPending.length) arrData = new byte[arrPending.length];
                     System.arraycopy(arrPending, 0, arrData, 0, arrPending.length);
-                    processImage(arrData, size.width, size.height);
+                    if(size!=null) processImage(arrData, size.width, size.height);
                     needAnotherFrame = true;
                 }
             }
