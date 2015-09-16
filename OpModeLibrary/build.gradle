@@ -25,10 +25,10 @@ repositories {
 }
 
 dependencies {
+    compile project(':FtcXtensible')
     compile(name: 'rcore', ext: 'jar')
     compile(name: 'mr', ext: 'jar')
     compile(name: 'wp2p', ext: 'jar')
     compile(name: 'analytics', ext: 'jar')
     compile(name: 'javadeck-all-0.1-alpha-1', ext: 'jar')
-    compile project(':FtcXtensible')
 }

@@ -2,13 +2,17 @@
 
 buildscript {
     repositories {
+        flatDir {
+            dirs 'libs'
+        }
             jcenter {
 	            url "http://jcenter.bintray.com/"
 		    }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.2.3'
-        classpath 'me.tatarka:gradle-retrolambda:3.1.0'
+        classpath (name: 'gretrolambda', ext: 'jar')
+        classpath (name: 'retrolambda-2.0.2', ext: 'jar')
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

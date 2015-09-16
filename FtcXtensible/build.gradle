@@ -9,9 +9,11 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
-        multiDexEnabled = true
+        //multiDexEnabled = true
     }
-
+    lintOptions {
+        abortOnError false
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -19,7 +21,7 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
     }
 }
 
@@ -28,12 +30,8 @@ repositories {
         dirs 'libs'
     }
 }
-apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'me.tatarka.retrolambda'
 
-retrolambda {
-    javaVersion JavaVersion.VERSION_1_7
-    oldJdk '/usr/lib/jvm/java-7-openjdk-amd64'
-}
 dependencies {
     compile(name: 'rcore', ext: 'jar')
     compile(name: 'mr', ext: 'jar')

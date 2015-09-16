@@ -120,7 +120,7 @@ public class ThunkedLegacyModule implements LegacyModule
         }
 
         @Override
-        public Lock getI2cReadCacheLock(int i) {
+        public Lock getI2cReadCacheLock(final int i) {
             return (new ResultableThunk<Lock>()
             {
                 @Override protected void actionOnLoopThread()
@@ -131,7 +131,7 @@ public class ThunkedLegacyModule implements LegacyModule
         }
 
         @Override
-        public Lock getI2cWriteCacheLock(int i) {
+        public Lock getI2cWriteCacheLock(final int i) {
             return (new ResultableThunk<Lock>()
             {
                 @Override protected void actionOnLoopThread()
@@ -142,7 +142,7 @@ public class ThunkedLegacyModule implements LegacyModule
         }
 
         @Override
-        public byte[] getI2cReadCache(int i) {
+        public byte[] getI2cReadCache(final int i) {
             return (new ResultableThunk<byte[]>()
             {
                 @Override protected void actionOnLoopThread()
@@ -153,7 +153,7 @@ public class ThunkedLegacyModule implements LegacyModule
         }
 
         @Override
-        public byte[] getI2cWriteCache(int i) {
+        public byte[] getI2cWriteCache(final int i) {
             return (new ResultableThunk<byte[]>()
             {
                 @Override protected void actionOnLoopThread()
@@ -164,7 +164,7 @@ public class ThunkedLegacyModule implements LegacyModule
         }
 
         @Override
-        public void setNxtI2cPortActionFlag(int i) {
+        public void setNxtI2cPortActionFlag(final int i) {
             (new ResultableThunk<byte[]>()
             {
                 @Override protected void actionOnLoopThread()
@@ -175,7 +175,7 @@ public class ThunkedLegacyModule implements LegacyModule
         }
 
         @Override
-        public boolean isNxtI2cPortActionFlagSet(int i) {
+        public boolean isNxtI2cPortActionFlagSet(final int i) {
             return (new ResultableThunk<Boolean>()
             {
                 @Override protected void actionOnLoopThread()
@@ -186,7 +186,7 @@ public class ThunkedLegacyModule implements LegacyModule
         }
 
         @Override
-        public void readI2cCacheFromModule(int i) {
+        public void readI2cCacheFromModule(final int i) {
             (new ResultableThunk<byte[]>()
             {
                 @Override protected void actionOnLoopThread()
@@ -197,7 +197,7 @@ public class ThunkedLegacyModule implements LegacyModule
         }
 
         @Override
-        public void writeI2cCacheToModule(int i) {
+        public void writeI2cCacheToModule(final int i) {
             (new ResultableThunk<byte[]>()
             {
                 @Override protected void actionOnLoopThread()
@@ -208,7 +208,7 @@ public class ThunkedLegacyModule implements LegacyModule
         }
 
         @Override
-        public void writeI2cPortFlagOnlyToModule(int i) {
+        public void writeI2cPortFlagOnlyToModule(final int i) {
             (new ResultableThunk<byte[]>()
             {
                 @Override protected void actionOnLoopThread()
@@ -219,7 +219,7 @@ public class ThunkedLegacyModule implements LegacyModule
         }
 
         @Override
-        public boolean isI2cPortInReadMode(int i) {
+        public boolean isI2cPortInReadMode(final int i) {
             return (new ResultableThunk<Boolean>()
             {
                 @Override protected void actionOnLoopThread()
@@ -230,7 +230,7 @@ public class ThunkedLegacyModule implements LegacyModule
         }
 
         @Override
-        public boolean isI2cPortInWriteMode(int i) {
+        public boolean isI2cPortInWriteMode(final int i) {
             return (new ResultableThunk<Boolean>()
             {
                 @Override protected void actionOnLoopThread()
@@ -241,7 +241,7 @@ public class ThunkedLegacyModule implements LegacyModule
         }
 
         @Override
-        public void registerForPortReadyCallback(PortReadyCallback portReadyCallback, int i) {
+        public void registerForPortReadyCallback(final PortReadyCallback portReadyCallback, final int i) {
             (new ResultableThunk<byte[]>()
             {
                 @Override protected void actionOnLoopThread()
@@ -252,7 +252,7 @@ public class ThunkedLegacyModule implements LegacyModule
         }
 
         @Override
-        public void deregisterForPortReadyCallback(int i) {
+        public void deregisterForPortReadyCallback(final int i) {
             (new ResultableThunk<byte[]>()
             {
                 @Override protected void actionOnLoopThread()

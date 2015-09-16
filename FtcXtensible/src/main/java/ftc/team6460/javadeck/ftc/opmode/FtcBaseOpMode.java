@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import ftc.team6460.javadeck.api.Maintainable;
 import ftc.team6460.javadeck.api.Maintainer;
 import ftc.team6460.javadeck.ftc.peripheral.FtcPeripheralsFactory;
+import org.swerverobotics.library.IAction;
 import org.swerverobotics.library.SynchronousOpMode;
 
 import java.util.HashSet;
@@ -29,8 +30,8 @@ public abstract class FtcBaseOpMode extends SynchronousOpMode implements Maintai
     }
 
     @Override
-    public void accept(Maintainable m) {
-        this.executeOnLoopThread(m::loop);
+    public void accept(final Maintainable m) {
+        this.executeOnLoopThread(new IAction(){public void doAction(){m.loop();}});
     }
 
 

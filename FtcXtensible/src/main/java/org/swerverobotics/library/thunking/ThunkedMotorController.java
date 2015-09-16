@@ -161,7 +161,7 @@ public class ThunkedMotorController implements DcMotorController, IThunkedReadWr
     }
 
     @Override
-    public synchronized boolean isBusy(int i) {
+    public synchronized boolean isBusy(final int i) {
         return (new ResultableThunk<Boolean>() {
             @Override
             protected void actionOnLoopThread() {
