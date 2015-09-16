@@ -31,30 +31,37 @@ public class OpenCvHelperTestActivity extends Activity {
                 OpenCvActivity.addCallback(new OpenCvActivity.MatCallback() {
                     opencv_core.CvMemStorage str = opencv_core.cvCreateMemStorage();
                     opencv_core.Mat gray = new opencv_core.Mat();
+                    opencv_core.Mat grayHalf = new opencv_core.Mat();
                     opencv_core.CvSeq circles;
                     @Override
                     public synchronized void handleMat(opencv_core.Mat mat) {
                         Log.e("MAT", "PROCESSING");
                         if (gray == null || gray.arrayWidth() != mat.arrayWidth() || gray.arrayHeight() != mat.arrayHeight()) {
-                            Log.i("PREPROC", "Remaking yuv");
+                            Log.i("PREPROC", "Remaking gray");
                             gray.create(mat.arrayHeight(), mat.arrayWidth(), CV_8UC1);
                         }
+                        if (grayHalf == null || grayHalf.arrayWidth() != mat.arrayWidth()/2 || grayHalf.arrayHeight() != mat.arrayHeight()/2) {
+                            Log.i("PREPROC", "Remaking grayhalf");
+                            grayHalf.create(mat.arrayHeight()/2, mat.arrayWidth()/2, CV_8UC1);
+                        }
                         cvtColor(mat, gray, COLOR_RGB2GRAY);
-                        cvSmooth(gray.asIplImage(),gray.asIplImage());
+                        cvResize(gray.asIplImage(), grayHalf.asIplImage());
+                        cvSmooth(grayHalf.asIplImage(),grayHalf.asIplImage());
 
-                        circles = cvHoughCircles(gray.asIplImage(), str, opencv_imgproc.CV_HOUGH_GRADIENT,1,gray.rows()/8, 200, 100, 0,0);
+                        circles = cvHoughCircles(grayHalf.asIplImage(), str, opencv_imgproc.CV_HOUGH_GRADIENT,1,grayHalf.rows()/8, 200, 100, 20,400);
                     }
 
                     @Override
                     public synchronized void draw(Canvas canvas) {
                         if (circles == null) return;
                         Paint p = new Paint();
+                        p.setStyle(Paint.Style.STROKE);
                         p.setColor(Color.GREEN);
                         Log.i("CIRCLE", new CvPoint3D32f(cvGetSeqElem(circles, 0)).toString());
 
                         for (int i = 0; (i < circles.total())&&(i<20); i++) {
                             opencv_core.CvPoint3D32f pt = new CvPoint3D32f(cvGetSeqElem(circles, i));
-                            canvas.drawCircle(pt.x(), pt.y(), pt.z(), p);
+                            canvas.drawCircle(pt.x()*2, pt.y()*2, pt.z()*2, p);
                         }
                     }
                 });
