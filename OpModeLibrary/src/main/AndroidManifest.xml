@@ -2,8 +2,7 @@
     package="org.ftc.opmodes">
 
     <application
-        android:allowBackup="true"
-        android:label="Ftc6460 Opmode library">
+        android:allowBackup="true">
 
     </application>
 

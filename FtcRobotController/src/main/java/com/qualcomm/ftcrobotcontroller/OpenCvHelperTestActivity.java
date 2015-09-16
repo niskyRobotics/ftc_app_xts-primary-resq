@@ -13,10 +13,9 @@ import android.view.View;
 import ftc.team6460.javadeck.ftc.vision.OpenCvActivity;
 import org.bytedeco.javacpp.indexer.FloatIndexer;
 import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacpp.opencv_imgproc;
 
-import static org.bytedeco.javacpp.opencv_core.CV_32FC1;
-import static org.bytedeco.javacpp.opencv_core.CV_32FC3;
-import static org.bytedeco.javacpp.opencv_core.CV_8UC1;
+import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_imgproc.*;
 
 public class OpenCvHelperTestActivity extends Activity {
@@ -30,9 +29,9 @@ public class OpenCvHelperTestActivity extends Activity {
             public synchronized void onClick(View view) {
                 Log.e("A", "CLICKED");
                 OpenCvActivity.addCallback(new OpenCvActivity.MatCallback() {
-
-                    opencv_core.Mat circles = new opencv_core.Mat(100, 1, CV_32FC3);
+                    opencv_core.CvMemStorage str = opencv_core.cvCreateMemStorage();
                     opencv_core.Mat gray = new opencv_core.Mat();
+                    opencv_core.CvSeq circles;
                     @Override
                     public synchronized void handleMat(opencv_core.Mat mat) {
                         Log.e("MAT", "PROCESSING");
@@ -41,20 +40,21 @@ public class OpenCvHelperTestActivity extends Activity {
                             gray.create(mat.arrayHeight(), mat.arrayWidth(), CV_8UC1);
                         }
                         cvtColor(mat, gray, COLOR_RGB2GRAY);
-                        HoughCircles(gray, circles, CV_HOUGH_GRADIENT, 1, gray.rows()/8, 200, 100, 0, 0 );
+                        cvSmooth(gray.asIplImage(),gray.asIplImage());
+
+                        circles = cvHoughCircles(gray.asIplImage(), str, opencv_imgproc.CV_HOUGH_GRADIENT,1,gray.rows()/8, 200, 100, 0,0);
                     }
 
                     @Override
                     public synchronized void draw(Canvas canvas) {
-                        if(circles==null) return;
+                        if (circles == null) return;
                         Paint p = new Paint();
                         p.setColor(Color.GREEN);
-                        FloatIndexer cIdx = circles.createIndexer();
-                        for(int i = 0; i < circles.rows(); i++){
-                            float x = cIdx.get(i,0,0);
-                            float y = cIdx.get(i,0,1);
-                            float r = cIdx.get(i,0,2);
-                            canvas.drawCircle(x,y,r, p);
+                        Log.i("CIRCLE", new CvPoint3D32f(cvGetSeqElem(circles, 0)).toString());
+
+                        for (int i = 0; (i < circles.total())&&(i<20); i++) {
+                            opencv_core.CvPoint3D32f pt = new CvPoint3D32f(cvGetSeqElem(circles, i));
+                            canvas.drawCircle(pt.x(), pt.y(), pt.z(), p);
                         }
                     }
                 });
