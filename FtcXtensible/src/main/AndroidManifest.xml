@@ -5,7 +5,7 @@
     <application
         android:allowBackup="true"
         android:label="FTC6460 Deploy" >
-        <activity android:name="ftc.team6460.javadeck.ftc.vision.OpenCvActivity" />
+        <activity android:name="com.qualcomm.ftcrobotcontroller.vision.OpenCvActivity" />
     </application>
 
 </manifest>

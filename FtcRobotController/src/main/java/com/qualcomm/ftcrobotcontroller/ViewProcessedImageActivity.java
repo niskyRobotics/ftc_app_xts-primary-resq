@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.*;
 import android.graphics.Rect;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
@@ -13,17 +12,13 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.*;
 import android.widget.FrameLayout;
-import ftc.team6460.javadeck.ftc.vision.OpenCvActivity;
+import ftc.team6460.javadeck.ftc.vision.OpenCvLegacyActivity;
 import org.bytedeco.javacpp.opencv_core;
-import org.bytedeco.javacpp.opencv_features2d;
 import org.bytedeco.javacpp.opencv_highgui;
 import org.bytedeco.javacpp.opencv_imgproc;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_imgproc.*;
@@ -35,7 +30,7 @@ public class ViewProcessedImageActivity extends Activity {
     private FrameLayout layout;
     private Preview mPreview;
     private int div;
-    private OpenCvActivity.MatCallback mc;
+    private OpenCvLegacyActivity.MatCallback mc;
 
     Bitmap bmp;
     @Override
@@ -47,7 +42,7 @@ public class ViewProcessedImageActivity extends Activity {
         layout = new FrameLayout(this);
         mPreview = new Preview(this);
         Uri uri = getIntent().getParcelableExtra("file_uri");
-        mc = new OpenCvActivity.MatCallback() {
+        mc = new OpenCvLegacyActivity.MatCallback() {
             opencv_core.CvMemStorage str = opencv_core.cvCreateMemStorage();
             opencv_core.Mat gray = new opencv_core.Mat();
             opencv_core.Mat grayHalf = new opencv_core.Mat();

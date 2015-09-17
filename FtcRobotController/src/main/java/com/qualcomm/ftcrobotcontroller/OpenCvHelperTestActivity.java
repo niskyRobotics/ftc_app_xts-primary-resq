@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import ftc.team6460.javadeck.ftc.vision.OpenCvActivity;
-import org.bytedeco.javacpp.indexer.FloatIndexer;
+import ftc.team6460.javadeck.ftc.vision.OpenCvActivityHelper;
+import ftc.team6460.javadeck.ftc.vision.OpenCvLegacyActivity;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_imgproc;
 
@@ -50,7 +49,7 @@ public class OpenCvHelperTestActivity extends Activity {
             @Override
             public synchronized void onClick(View view) {
                 Log.e("A", "CLICKED");
-                OpenCvActivity.addCallback(new OpenCvActivity.MatCallback() {
+                OpenCvLegacyActivity.addCallback(new OpenCvLegacyActivity.MatCallback() {
                     opencv_core.CvMemStorage str = opencv_core.cvCreateMemStorage();
                     opencv_core.Mat gray = new opencv_core.Mat();
                     opencv_core.Mat grayHalf = new opencv_core.Mat();
@@ -94,7 +93,7 @@ public class OpenCvHelperTestActivity extends Activity {
                 });
 
 
-                OpenCvActivity.startActivity(OpenCvHelperTestActivity.this);
+                ftc.team6460.javadeck.ftc.vision.OpenCvLegacyActivity.startActivity(OpenCvHelperTestActivity.this);
             }
         });
 

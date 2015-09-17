@@ -108,6 +108,12 @@
 
                 android:screenOrientation="landscape">
         </activity>
+        <activity
+                android:name="ftc.team6460.javadeck.ftc.vision.OpenCvLegacyActivity"
+                android:label="OpenCV Legacy Activity"
+                android:screenOrientation="landscape">
+        </activity>
+
     </application>
 
 </manifest>

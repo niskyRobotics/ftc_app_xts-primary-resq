@@ -1,3 +1,4 @@
+
 package ftc.team6460.javadeck.ftc.vision;
 
 import android.app.Activity;
@@ -36,26 +37,27 @@ import static org.bytedeco.javacpp.opencv_objdetect.cvHaarDetectObjects;
 /**
  * Created by hexafraction on 9/14/15.
  */
-public class OpenCvActivity extends Activity {
+public class OpenCvLegacyActivity extends Activity {
     private FrameLayout layout;
     protected FaceView faceView;
     private Preview mPreview;
 
     static HashSet<MatCallback> callbacks = new HashSet<>();
 
-static volatile boolean running;
-    public static void startActivity(Context cx){
-        if(!running){
-            running=true;
-            cx.startActivity(new Intent(cx, OpenCvActivity.class));
+    static volatile boolean running;
+
+    public static void startActivity(Context cx) {
+        if (!running) {
+            running = true;
+            cx.startActivity(new Intent(cx, OpenCvLegacyActivity.class));
         }
     }
 
-    public static void addCallback(MatCallback cb){
+    public static void addCallback(MatCallback cb) {
         callbacks.add(cb);
     }
 
-    public static void removeCallback(MatCallback cb){
+    public static void removeCallback(MatCallback cb) {
         callbacks.remove(cb);
     }
 
@@ -118,7 +120,7 @@ static volatile boolean running;
 
     @Override
     protected void onPause() {
-        running=false;
+        running = false;
         super.onPause();
         this.finish();
     }
@@ -167,6 +169,7 @@ class FaceView extends View implements Camera.PreviewCallback {
     private opencv_core.CvMemStorage storage;
     private volatile boolean needAnotherFrame = true;
     Camera.Size size;
+
     public class RunProcess implements Runnable {
 
         @Override
@@ -175,14 +178,14 @@ class FaceView extends View implements Camera.PreviewCallback {
                 if (arrPending != null) {
                     if (arrData == null || arrData.length != arrPending.length) arrData = new byte[arrPending.length];
                     System.arraycopy(arrPending, 0, arrData, 0, arrPending.length);
-                    if(size!=null) processImage(arrData, size.width, size.height);
+                    if (size != null) processImage(arrData, size.width, size.height);
                     needAnotherFrame = true;
                 }
             }
         }
     }
 
-    public FaceView(OpenCvActivity context) throws IOException {
+    public FaceView(OpenCvLegacyActivity context) throws IOException {
         super(context);
 
 
@@ -224,9 +227,9 @@ class FaceView extends View implements Camera.PreviewCallback {
         // First, downsample our image and convert it into a grayscale IplImage
         int bytesPerPixel = data.length / (width * height);
         //1620 for YUV NV21
-        if (yuvImage == null || yuvImage.arrayWidth() != width || yuvImage.arrayHeight() != height + (height/2)) {
+        if (yuvImage == null || yuvImage.arrayWidth() != width || yuvImage.arrayHeight() != height + (height / 2)) {
             Log.i("PREPROC", "Remaking yuv");
-            yuvImage.create(height + (height/2), width, CV_8UC1);
+            yuvImage.create(height + (height / 2), width, CV_8UC1);
         }
         if (rgbImage == null || rgbImage.arrayWidth() != width || rgbImage.arrayHeight() != height) {
             Log.i("PREPROC", "Remaking rgbImage: Currently " + rgbImage.arrayWidth() + "*" + rgbImage.arrayHeight());
@@ -243,7 +246,7 @@ class FaceView extends View implements Camera.PreviewCallback {
         }
         opencv_imgproc.cvtColor(yuvImage, rgbImage, opencv_imgproc.COLOR_YUV2RGB_NV21);
 
-        for(OpenCvActivity.MatCallback cb : OpenCvActivity.callbacks){
+        for (OpenCvLegacyActivity.MatCallback cb : OpenCvLegacyActivity.callbacks) {
             cb.handleMat(rgbImage);
         }
 
@@ -257,7 +260,7 @@ class FaceView extends View implements Camera.PreviewCallback {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        for(OpenCvActivity.MatCallback cb : OpenCvActivity.callbacks){
+        for (OpenCvLegacyActivity.MatCallback cb : OpenCvLegacyActivity.callbacks) {
             cb.draw(canvas);
         }
         super.onDraw(canvas);
@@ -312,16 +315,16 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         mCamera = Camera.open(mCID);
-        OpenCvActivity.setCameraDisplayOrientation((Activity) this.getContext(), mCID, mCamera);
+        OpenCvLegacyActivity.setCameraDisplayOrientation((Activity) this.getContext(), mCID, mCamera);
         try {
             mCamera.setPreviewDisplay(holder);
         } catch (IOException exception) {
             mCamera.release();
             mCamera = null;
         }
-        ((OpenCvActivity) this.getContext()).faceView.run = true;
-        ((OpenCvActivity) this.getContext()).faceView.imgProcessor = new Thread(((OpenCvActivity) this.getContext()).faceView.new RunProcess());
-        ((OpenCvActivity) this.getContext()).faceView.imgProcessor.start();
+        ((OpenCvLegacyActivity) this.getContext()).faceView.run = true;
+        ((OpenCvLegacyActivity) this.getContext()).faceView.imgProcessor = new Thread(((OpenCvLegacyActivity) this.getContext()).faceView.new RunProcess());
+        ((OpenCvLegacyActivity) this.getContext()).faceView.imgProcessor.start();
 
     }
 
@@ -336,7 +339,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
         mCamera.release();
 
         mCamera = null;
-        ((OpenCvActivity) this.getContext()).faceView.run = false;
+        ((OpenCvLegacyActivity) this.getContext()).faceView.run = false;
     }
 
 
@@ -386,7 +389,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
         parameters.setRotation(rt);
         Log.w("RT", "setting rt: " + rt);
         mCamera.setParameters(parameters);
-        OpenCvActivity.setCameraDisplayOrientation((Activity) this.getContext(), mCID, mCamera);
+        OpenCvLegacyActivity.setCameraDisplayOrientation((Activity) this.getContext(), mCID, mCamera);
         if (previewCallback != null) {
             mCamera.setPreviewCallbackWithBuffer(previewCallback);
             Camera.Size size = parameters.getPreviewSize();

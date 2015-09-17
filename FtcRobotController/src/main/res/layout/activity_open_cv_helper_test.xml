@@ -2,7 +2,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="ftc.team6460.javadeck.ftc.vision.OpenCvHelperTestActivity">
+                tools:context="com.qualcomm.ftcrobotcontroller.vision.OpenCvHelperTestActivity">
 
     <FrameLayout
             android:layout_width="fill_parent"

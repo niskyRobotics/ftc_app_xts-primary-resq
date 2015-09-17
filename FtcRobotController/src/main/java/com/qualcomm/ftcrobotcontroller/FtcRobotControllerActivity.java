@@ -48,10 +48,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.ftccommon.FtcEventLoop;
@@ -203,6 +200,16 @@ public class FtcRobotControllerActivity extends Activity {
     if (controllerService != null) unbindService(connection);
 
     RobotLog.cancelWriteLogcatToDisk(this);
+  }
+
+  public void initView(final View preview) {
+    runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        FrameLayout previewLayout = (FrameLayout) findViewById(R.id.previewLayout);
+        previewLayout.addView(preview);
+      }
+    });
   }
 
   @Override
