@@ -26,5 +26,8 @@
 
   <!-- Preferences -->
   <string name="pref_change_wifi_channel">Change Wifi Channel</string>
+    <string name="title_activity_view_processed_image">ViewProcessedImageActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

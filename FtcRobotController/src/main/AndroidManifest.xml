@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.qualcomm.ftcrobotcontroller"
           android:name="android.support.multidex.MultiDexApplication"
+          package="com.qualcomm.ftcrobotcontroller"
           android:versionCode="1"
           android:versionName="1.0">
-
 
     <uses-permission
             android:name="android.permission.ACCESS_WIFI_STATE"
@@ -62,11 +61,12 @@
                     android:resource="@xml/device_filter"/>
         </activity>
         <activity
-                android:name="com.qualcomm.ftcrobotcontroller.OpenCvHelperTestActivity"
+                android:name=".OpenCvHelperTestActivity"
                 android:label="FTC6460 OpenCV helper test"
                 android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -74,7 +74,6 @@
                 android:name="com.qualcomm.ftccommon.FtcRobotControllerSettingsActivity"
                 android:label="@string/settings_activity">
         </activity>
-
         <activity
                 android:name="com.qualcomm.ftccommon.FtcWifiChannelSelectorActivity"
                 android:label="Wifi Channel Selector">
@@ -99,8 +98,15 @@
                 tools:replace="android:label">
             <intent-filter>
                 <action android:name="com.qualcomm.ftcrobotcontroller.VIEW_LOGS"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
+        </activity>
+        <activity
+                android:name=".ViewProcessedImageActivity"
+                android:label="@string/title_activity_view_processed_image"
+
+                android:screenOrientation="landscape">
         </activity>
     </application>
 
