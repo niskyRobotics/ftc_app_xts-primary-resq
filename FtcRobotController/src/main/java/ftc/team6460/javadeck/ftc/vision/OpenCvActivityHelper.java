@@ -286,7 +286,7 @@ static volatile boolean running;
             OpenCvActivityHelper.this.faceView.run = true;
             OpenCvActivityHelper.this.faceView.imgProcessor = new Thread(OpenCvActivityHelper.this.faceView.new RunProcess(), "openCvHelperThread");
             OpenCvActivityHelper.this.faceView.imgProcessor.start();
-            
+
         }
 
         int rt = 0;
