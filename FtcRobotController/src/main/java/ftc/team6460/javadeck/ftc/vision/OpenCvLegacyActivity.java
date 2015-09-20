@@ -297,7 +297,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
             mCamera = null;
         }
         ((OpenCvLegacyActivity) this.getContext()).faceView.run = true;
-        ((OpenCvLegacyActivity) this.getContext()).faceView.imgProcessor = new Thread(((OpenCvLegacyActivity) this.getContext()).faceView.new RunProcess());
+        ((OpenCvLegacyActivity) this.getContext()).faceView.imgProcessor = new Thread(((OpenCvLegacyActivity) this.getContext()).faceView.new RunProcess(), "openCvProcessorThread");
         ((OpenCvLegacyActivity) this.getContext()).faceView.imgProcessor.start();
 
     }
