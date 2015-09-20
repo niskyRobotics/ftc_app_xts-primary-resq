@@ -33,6 +33,9 @@ dependencies {
     compile files('libs/netty-all-4.0.30.Final.jar')
     compile 'com.google.guava:guava:19.0-rc1'
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'org.bytedeco:javacpp-presets:0.11'
+    compile 'org.bytedeco:javacpp:0.11'
+    compile group: 'org.bytedeco', name: 'javacv', version: '0.11'
     compile project(':FtcXtensible')
     compile project(':OpModeLibrary')
 }

@@ -40,10 +40,8 @@ dependencies {
     compile(name: 'wp2p', ext: 'jar')
     compile(name: 'analytics', ext: 'jar')
     compile(name: 'javadeck-all-0.1-alpha-1', ext: 'jar')
-    compile 'org.bytedeco:javacpp-presets:0.11'
-    compile 'org.bytedeco:javacpp:0.11'
+
     compile files('libs/netty-all-4.0.30.Final.jar')
-    compile group: 'org.bytedeco', name: 'javacv', version: '0.11'
     compile 'com.google.guava:guava:19.0-rc1'
     compile 'com.google.code.gson:gson:2.3.1'
 }

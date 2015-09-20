@@ -11,7 +11,7 @@ import android.view.*;
 import android.widget.FrameLayout;
 import com.qualcomm.ftcrobotcontroller.FtcRobotControllerActivity;
 import org.bytedeco.javacpp.*;
-import org.opencv.android.OpenCVLoader;
+
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.bytedeco.javacpp.opencv_core.*;
-import static org.bytedeco.javacpp.opencv_objdetect.cvHaarDetectObjects;
 
 /**
  * Created by hexafraction on 9/14/15.
@@ -30,22 +29,22 @@ public class OpenCvActivityHelper {
     protected FaceView faceView;
     private Preview mPreview;
     private FtcRobotControllerActivity cx;
-    static HashSet<MatCallback> callbacks = new HashSet<>();
+    HashSet<MatCallback> callbacks = new HashSet<>();
 
 static volatile boolean running;
 
-    public static void addCallback(MatCallback cb){
+    public void addCallback(MatCallback cb){
         callbacks.add(cb);
     }
 
-    public static void removeCallback(MatCallback cb){
+    public void removeCallback(MatCallback cb){
         callbacks.remove(cb);
     }
 
-    static {
-        OpenCVLoader.initDebug();
-        //Loader.load();
-    }
+//    static {
+//        OpenCVLoader.initDebug();
+//        //Loader.load();
+//    }
 
     public static void setCameraDisplayOrientation(Activity activity,
                                                    int cameraId, android.hardware.Camera camera) {
@@ -92,7 +91,7 @@ static volatile boolean running;
         this.cx = cx;
     }
 
-    protected void attach() {
+    public void attach() {
 
         // Hide the window title.
         cx.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -208,7 +207,7 @@ static volatile boolean running;
             }
             opencv_imgproc.cvtColor(yuvImage, rgbImage, opencv_imgproc.COLOR_YUV2RGB_NV21);
 
-            for(OpenCvActivityHelper.MatCallback cb : OpenCvActivityHelper.callbacks){
+            for(OpenCvActivityHelper.MatCallback cb : OpenCvActivityHelper.this.callbacks){
                 cb.handleMat(rgbImage);
             }
 
@@ -222,7 +221,7 @@ static volatile boolean running;
 
         @Override
         protected void onDraw(Canvas canvas) {
-            for(OpenCvActivityHelper.MatCallback cb : OpenCvActivityHelper.callbacks){
+            for(OpenCvActivityHelper.MatCallback cb : OpenCvActivityHelper.this.callbacks){
                 cb.draw(canvas);
             }
             super.onDraw(canvas);
