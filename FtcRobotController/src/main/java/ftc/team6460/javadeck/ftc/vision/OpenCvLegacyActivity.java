@@ -16,11 +16,6 @@ import android.util.Log;
 import android.view.*;
 import android.widget.FrameLayout;
 import org.bytedeco.javacpp.*;
-import org.bytedeco.javacpp.indexer.FloatIndexer;
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.calib3d.Calib3d;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,7 +27,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.bytedeco.javacpp.opencv_core.*;
-import static org.bytedeco.javacpp.opencv_objdetect.cvHaarDetectObjects;
 
 /**
  * Created by hexafraction on 9/14/15.
@@ -61,10 +55,6 @@ public class OpenCvLegacyActivity extends Activity {
         callbacks.remove(cb);
     }
 
-    static {
-        OpenCVLoader.initDebug();
-        //Loader.load();
-    }
 
     public static void setCameraDisplayOrientation(Activity activity,
                                                    int cameraId, android.hardware.Camera camera) {
@@ -101,22 +91,6 @@ public class OpenCvLegacyActivity extends Activity {
         setCameraDisplayOrientation(this, mPreview.mCID, mPreview.mCamera);
     }
 
-
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS: {
-                    Log.i("OCV", "OpenCV loaded successfully");
-                }
-                break;
-                default: {
-                    super.onManagerConnected(status);
-                }
-                break;
-            }
-        }
-    };
 
     @Override
     protected void onPause() {
