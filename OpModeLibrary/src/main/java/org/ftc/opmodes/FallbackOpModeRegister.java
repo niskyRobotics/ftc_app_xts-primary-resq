@@ -71,7 +71,7 @@ public class FallbackOpModeRegister implements OpModeRegister {
     @Override
     public void register(final OpModeManager mgr) {
         // Add your hardcoded OpModes here
-
+        mgr.register("twoMotorTelopTest", QuickTestTeleop.class);
         // Please note that this executes immediately right now
     }
 }
