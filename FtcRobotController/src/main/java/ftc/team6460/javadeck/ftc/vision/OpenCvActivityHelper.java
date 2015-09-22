@@ -10,13 +10,14 @@ import android.util.Log;
 import android.view.*;
 import android.widget.FrameLayout;
 import com.qualcomm.ftcrobotcontroller.FtcRobotControllerActivity;
+import com.qualcomm.ftcrobotcontroller.R;
 import org.bytedeco.javacpp.*;
 
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.bytedeco.javacpp.opencv_core.*;
@@ -29,7 +30,7 @@ public class OpenCvActivityHelper {
     protected FaceView faceView;
     private Preview mPreview;
     private FtcRobotControllerActivity cx;
-    HashSet<MatCallback> callbacks = new HashSet<>();
+    CopyOnWriteArraySet<MatCallback> callbacks = new CopyOnWriteArraySet<>();
 
 static volatile boolean running;
 
@@ -93,11 +94,7 @@ static volatile boolean running;
 
     public void attach() {
 
-        // Hide the window title.
-        cx.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-
-        cx.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        // Hide the window title.
 
         // Create our Preview view and set it as the content of our activity.
         try {
@@ -109,7 +106,7 @@ static volatile boolean running;
             layout.addView(mPreview);
 
             layout.addView(faceView);
-
+            ((FrameLayout)cx.findViewById(R.id.previewLayout)).addView(layout);
         } catch (IOException e) {
             e.printStackTrace();
             new AlertDialog.Builder(cx).setMessage(e.getMessage()).create().show();
@@ -170,9 +167,9 @@ static volatile boolean running;
 
             {
                 // The camera has probably just been released, ignore.
-                Log.e("KP", e.getClass().getName() + ":" + e.getMessage());
+                Log.w("KP", e.getClass().getName() + ":" + e.getMessage());
                 for (StackTraceElement el : e.getStackTrace()) {
-                    Log.e("KP:ST", el.toString());
+                    Log.w("KP:ST", el.toString());
                 }
             }
 

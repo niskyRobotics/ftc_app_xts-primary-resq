@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="color">
+        <item>Red</item>
+        <item>Blue</item>
+    </string-array>
+
+    <string-array name="colorAlias">
+        <item>"RED"</item>
+        <item>"BLUE"</item>
+    </string-array>
+    <string-array name="ramp">
+        <item>Near</item>
+        <item>Far</item>
+    </string-array>
+
+    <string-array name="rampAlias">
+        <item>"NEAR"</item>
+        <item>"FAR"</item>
+    </string-array>
+    <string-array name="startPos">
+        <item>3 inches (+/- 1 in) from mountain edge</item>
+        <item>20 inches (+/- 1 in) inches from corner. Note: Align 2 inches away from corner hitting center divider</item>
+    </string-array>
+
+    <string-array name="startPosAlias">
+        <item>"MOUNTAIN"</item>
+        <item>"CORNER"</item>
+    </string-array>
+</resources>

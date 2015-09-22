@@ -10,7 +10,7 @@
             <intent
                     android:action="com.qualcomm.ftccommon.configuration.FtcWifiChannelSelectorActivity.intent.action.Launch"
                     android:targetPackage="com.qualcomm.ftccommon"
-                    android:targetClass="com.qualcomm.ftccommon.FtcWifiChannelSelectorActivity" />
+                    android:targetClass="com.qualcomm.ftccommon.FtcWifiChannelSelectorActivity"/>
         </PreferenceScreen>
     </PreferenceCategory>
 
@@ -23,7 +23,7 @@
             <intent
                     android:action="com.qualcomm.ftccommon.configuration.FtcLoadFileActivity.intent.action.Launch"
                     android:targetPackage="com.qualcomm.ftccommon"
-                    android:targetClass="com.qualcomm.ftccommon.configuration.FtcLoadFileActivity" />
+                    android:targetClass="com.qualcomm.ftccommon.configuration.FtcLoadFileActivity"/>
         </PreferenceScreen>
 
         <PreferenceScreen
@@ -32,7 +32,104 @@
             <intent
                     android:action="com.qualcomm.ftccommon.configuration.FtcAutoconfigureActivity.intent.action.Launch"
                     android:targetPackage="com.qualcomm.ftccommon"
-                    android:targetClass="com.qualcomm.ftccommon.configuration.AutoConfigureActivity" />
+                    android:targetClass="com.qualcomm.ftccommon.configuration.AutoConfigureActivity"/>
         </PreferenceScreen>
+        <PreferenceScreen
+                android:title="@string/title_activity_autoconfigure"
+                android:key="@string/pref_launch_autoconfigure">
+            <intent
+                    android:action="com.qualcomm.ftccommon.configuration.FtcAutoconfigureActivity.intent.action.Launch"
+                    android:targetPackage="com.qualcomm.ftccommon"
+                    android:targetClass="com.qualcomm.ftccommon.configuration.AutoConfigureActivity"/>
+        </PreferenceScreen>
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="FTC6460 specific">
+
+        <PreferenceScreen
+                android:title="FTC6460 Tuning"
+                android:key="ftc6460_tuning">
+            <PreferenceCategory
+
+                    android:title="Traction control"
+
+                    android:key="trac">
+                <CheckBoxPreference
+                        android:key="@string/pref_trac_enable"
+                        android:summary="Enable per-wheel traction control by dropping power in response to detected wheelslip"
+                        android:title="Enable traction control"
+                        android:defaultValue="true"
+                        />
+                <EditTextPreference
+                        android:defaultValue="1.33"
+                        android:dialogTitle="Wheelslip detection threshold factor"
+                        android:inputType="numberDecimal"
+                        android:key="@string/pref_trac_overspeed_factor"
+                        android:summary="Define the factor by which velocity needs to increase to trigger traction control. Should be more than 1"
+                        android:title="Wheelslip detection threshold factor" />
+                <EditTextPreference
+                        android:defaultValue="0.66"
+                        android:dialogTitle="Wheelslip mitigation power factor"
+                        android:inputType="numberDecimal"
+                        android:key="@string/pref_trac_powerdrop_factor"
+                        android:summary="Define the factor by which velocity needs to increase to trigger traction control. Should be less than 1"
+                        android:title="Wheelslip mitigation power factor" />
+                <EditTextPreference
+                        android:defaultValue="5"
+                        android:dialogTitle="Autonomous ramp climb time"
+                        android:inputType="numberDecimal"
+                        android:key="@string/auton_ramp_climb_time"
+                        android:summary="Time from entering ramp to drive motor cut-off."
+                        android:title="Autonomous ramp climb time"/>
+            </PreferenceCategory>
+
+
+        </PreferenceScreen>
+        <PreferenceScreen
+                android:title="FTC6460 Auton"
+                android:key="ftc6460_tuning">
+            <PreferenceCategory
+
+                    android:title="Autonomous overall strategy"
+
+                    android:key="trac">
+                <ListPreference
+                        android:key="@string/auton_team_color"
+                        android:title="Team alliance color"
+                        android:entries="@array/color"
+                        android:entryValues="@array/colorAlias"/>
+                <CheckBoxPreference
+                        android:key="@string/auton_do_beacon"
+                        android:summary="Target pressing the beacon light"
+                        android:title="Press beacon light"
+                        android:defaultValue="true"
+                        />
+                <CheckBoxPreference
+                        android:key="@string/auton_park_on_ramp"
+                        android:summary="Target parking on ramp"
+                        android:title="Park on ramp"
+                        android:defaultValue="true"
+                        />
+                <ListPreference
+                        android:key="@string/auton_ramp_selection"
+                        android:title="Autonomous ramp selection"
+                        android:entries="@array/ramp"
+                        android:entryValues="@array/rampAlias"/>
+                <ListPreference
+                        android:key="@string/auton_start_position"
+                        android:title="Start position"
+                        android:entries="@array/startPos"
+                        android:entryValues="@array/startPosAlias"/>
+                <EditTextPreference
+                        android:defaultValue="5"
+                        android:dialogTitle="Time to beacon area clear"
+                        android:inputType="number"
+                        android:key="@string/auton_beacon_area_clear_time"
+                        android:summary="How long to wait for other robot to clear beacon area."
+                        android:title="Time to beacon area clear"/>
+            </PreferenceCategory>
+        </PreferenceScreen>
+
+
     </PreferenceCategory>
 </PreferenceScreen>

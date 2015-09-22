@@ -39,10 +39,14 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,6 +69,8 @@ import com.qualcomm.robotcore.util.Dimmer;
 import com.qualcomm.robotcore.util.ImmersiveMode;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.wifi.WifiDirectAssistant;
+import ftc.team6460.javadeck.ftc.vision.OpenCvActivityHelper;
+import org.bytedeco.javacpp.opencv_core;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -157,6 +163,27 @@ public class FtcRobotControllerActivity extends Activity {
     hittingMenuButtonBrightensScreen();
 
     if (USE_DEVICE_EMULATION) { ModernRoboticsHardwareFactory.enableDeviceEmulation(); }
+
+    OpenCvActivityHelper ocvh = new OpenCvActivityHelper(this);
+    ocvh.addCallback(new OpenCvActivityHelper.MatCallback() {
+      @Override
+      public void handleMat(opencv_core.Mat mat) {
+        Log.i("FRAME", "Processed a frame");
+        try {
+          Thread.sleep(100); // imitate long process
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+
+      @Override
+      public void draw(Canvas canvas) {
+        Paint p = new Paint();
+        p.setColor(Color.GREEN);
+        canvas.drawCircle(10,10,4,p);
+      }
+    });
+    ocvh.attach();
   }
 
   @Override
