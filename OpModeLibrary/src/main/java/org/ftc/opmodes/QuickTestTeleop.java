@@ -19,7 +19,6 @@ public class QuickTestTeleop extends OpMode{
     double scaledPower;
     @Override
     public void init() {
-
         l0 = hardwareMap.dcMotor.get("l0");
         r0 = hardwareMap.dcMotor.get("r0");
 
