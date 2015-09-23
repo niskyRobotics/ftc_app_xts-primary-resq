@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_trac_enable">pref_trac_enable</string>
-    <string name="pref_trac_overspeed_factor">pref_trac_overspeed_factor</string>
-    <string name="pref_trac_powerdrop_factor">pref_trac_powerdrop_factor</string>
-    <string name="auton_ramp_climb_time">auton_ramp_climb_time</string>
-    <string name="auton_team_color">auton_team_color</string>
-    <string name="auton_do_beacon">auton_do_beacon</string>
-    <string name="auton_park_on_ramp">auton_park_on_ramp</string>
-    <string name="auton_ramp_selection">auton_ramp_selection</string>
-    <string name="auton_start_position">auton_start_position</string>
-    <string name="auton_beacon_area_clear_time">auton_beacon_area_clear_time</string>
+    <string name="dummy">Do not use</string>
+
 </resources>

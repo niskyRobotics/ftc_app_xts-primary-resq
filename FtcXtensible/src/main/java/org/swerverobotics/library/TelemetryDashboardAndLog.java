@@ -1,14 +1,30 @@
 package org.swerverobotics.library;
 
 import com.qualcomm.robotcore.robocol.Telemetry;
-
-import org.swerverobotics.library.thunking.SynchronousThreadContext;
-import org.swerverobotics.library.thunking.ThunkedTelemetry;
-
+import org.swerverobotics.library.interfaces.*;
+import org.swerverobotics.library.internal.*;
 import java.util.*;
 
 /**
- *
+ * TelemetryDashboardAndLog is a telemetry helper class that makes it easier write 
+ * telemetry to the driver station. It is primarily intended to be used within
+ * SynchronousOpModes.
+ * <p>
+ * The telemetry is provided in two parts: a dashboard, and a log, instances of which 
+ * reside in fields of the same names within the TelemetryDashboardAndLog object.
+ * <p>
+ * The dashboard is configured once, using a series of {@link Dashboard#line() line()} 
+ * calls each containing a series of {@link org.swerverobotics.library.TelemetryDashboardAndLog.Dashboard#item item()} invocations.
+ * You then call {@link Dashboard#update() update()} on the dashboard at a relatively high
+ * rate of speed, as often as you like, usually at the bottom of your while(opModeIsActive())
+ * loop. Periodically, at a rate controlled by the {@link org.swerverobotics.library.TelemetryDashboardAndLog.Dashboard#msUpdateInterval msUpdateInterval}
+ * field, which defaults to one second, these {@link Dashboard#update() update()} calls will actually 
+ * cause reevaluation of the dashboard line items and transmission of the data to the driver station. 
+ * So: call it often, but the transmission traffic is kept to a reasonable amount.
+ * <p>
+ * The log simply contains a serial history of the messages it has been asked to display. 
+ * When new additions are made to the log, they are conveyed to the driver station in an
+ * expeditious manner. The dashboard is also updated at such times.
  */
 public class TelemetryDashboardAndLog
     {
@@ -26,7 +42,8 @@ public class TelemetryDashboardAndLog
 
         /**
          * msUpdateInterval is the interval in milliseconds at which the drive station
-         * is refreshed with new contents of the dashboard.
+         * is refreshed with new contents of the dashboard. If updates aren't happening
+         * frequently enough for you, you can change this value.
          *
          * Note that updates might happen more frequently if messages are written to the log.
          */
@@ -35,42 +52,57 @@ public class TelemetryDashboardAndLog
         /**
          * itemDelimeter is the text used to separate dashboard items on a single line
          */
-        public String itemDelimeter = " | ";
+        public String itemDelimiter = " | ";
 
         // We just use the outer class so as to *mindlessly* avoid any potential deadlocks
         private Object getLock() { return TelemetryDashboardAndLog.this; }
+
+        /** the list of actions that are evaluated before the lines are composed */
+        private Vector<IAction> actions = null;
+        /** the lines that are composed to form the dashboard contents */
         private Vector<Dashboard.Line> lines = null;
 
         //------------------------------------------------------------------------------------------
         // Types
         //------------------------------------------------------------------------------------------
 
-        public class Item
+        class Item
             {
             String        caption;
             IFunc<String> value;
+            
+            Item(String caption, IFunc<String> value)
+                {
+                this.caption = caption;
+                this.value   = value;
+                }
 
-            public void composeTo(StringBuilder builder)
+            void composeTo(StringBuilder builder)
                 {
                 builder.append(this.caption);
                 builder.append(this.value.value());
                 }
             }
 
-        public class Line
+        class Line
             {
-            List<Item> items;
+            final Item[] items;
+            
+            Line(Item[] items)
+                {
+                this.items = items;
+                }
 
-            public String compose()
+            String compose()
                 {
                 StringBuilder result = new StringBuilder();
                 boolean first = true;
                 for (Item item : this.items)
                     {
-                    // Separate the items with the delimeter
+                    // Separate the items with the delimiter
                     if (!first)
                         {
-                        result.append(itemDelimeter);
+                        result.append(itemDelimiter);
                         }
                     item.composeTo(result);
                     first = false;
@@ -90,7 +122,8 @@ public class TelemetryDashboardAndLog
             {
             synchronized (this.getLock())
                 {
-                this.lines = new Vector<Dashboard.Line>();
+                this.actions = new Vector<IAction>();
+                this.lines   = new Vector<Dashboard.Line>();
                 }
             TelemetryDashboardAndLog.this.updateLogCapacity();
             }
@@ -101,21 +134,45 @@ public class TelemetryDashboardAndLog
 
         /**
          * Create a new dashboard item with the indicated caption and value computation.
+         * 
+         * @param itemCaption   the string with which the item value is to be labelled
+         * @param itemValue     a lambda expression that when evaluated will provide the
+         *                      then-current value of the item
+         * @return              the newly created item
          */
         public Item item(final String itemCaption, final IFunc<Object> itemValue)
             {
-            Item result = new Item();
-            result.caption = itemCaption;
-            result.value = new IFunc<String>()
-                {
-                @Override public String value()
+            Item result = new Item(itemCaption, new IFunc<String>()
                     {
-                    return itemValue.value().toString();
+                    @Override public String value()
+                        {
+                        return itemValue.value().toString();
+                        }
                     }
-                };
+                );
             return result;
             }
 
+        //------------------------------------------------------------------------------------------
+        // Actions
+        //------------------------------------------------------------------------------------------
+
+        /**
+         * In addition to lines, a dashboard may also contain a list of actions.
+         * When the dashboard is to be updated, these actions are evaluated before
+         * the dashboard lines are composed. A typical use of such actions is to 
+         * initialize some state variable, parts of which are subsequently displayed
+         * in dashboard lines and items. This can help avoid needless re-evaluation.
+         * @param action
+         */
+        public void action(IAction action)
+            {
+            synchronized (this.getLock())
+                {
+                this.actions.add(action);
+                }
+            }
+        
         //------------------------------------------------------------------------------------------
         // Lines
         //------------------------------------------------------------------------------------------
@@ -125,83 +182,89 @@ public class TelemetryDashboardAndLog
          */
         public void line()
             {
-            this.line(new ArrayList<Item>());
+            this.line(new Item[] {});
             }
         /**
          * Add a line to the dashboard containing the indicated item
+         * 
+         * @param item      the item to be contained in the line
          */
         public void line(Item item)
             {
-            ArrayList<Item> items = new ArrayList<Item>();
-            items.add(item);
-            this.line(items);
+            this.line(new Item[] { item });
             }
         /**
          * Add a line to the dashboard containing the indicated items
+         * 
+         * @param item0     the first item to be contained in the line
+         * @param item1     the second item to be contained in the line
          */
         public void line(Item item0, Item item1)
             {
-            ArrayList<Item> items = new ArrayList<Item>();
-            items.add(item0);
-            items.add(item1);
-            this.line(items);
+            this.line(new Item[] { item0, item1 });
             }
         /**
          * Add a line to the dashboard containing the indicated items
+         *
+         * @param item0     the first item to be contained in the line
+         * @param item1     the second item to be contained in the line
+         * @param item2     the third item to be contained in the line
          */
         public void line(Item item0, Item item1, Item item2)
             {
-            ArrayList<Item> items = new ArrayList<Item>();
-            items.add(item0);
-            items.add(item1);
-            items.add(item2);
-            this.line(items);
+            this.line(new Item[] { item0, item1, item2 });
             }
         /**
          * Add a line to the dashboard containing the indicated items
+
+         * @param item0     the first item to be contained in the line
+         * @param item1     the second item to be contained in the line
+         * @param item2     the third item to be contained in the line
+         * @param item3     the fourth item to be contained in the line
          */
         public void line(Item item0, Item item1, Item item2, Item item3)
             {
-            ArrayList<Item> items = new ArrayList<Item>();
-            items.add(item0);
-            items.add(item1);
-            items.add(item2);
-            items.add(item3);
-            this.line(items);
+            this.line(new Item[] { item0, item1, item2, item3 });
             }
         /**
          * Add a line to the dashboard containing the indicated items
+         *
+         * @param item0     the first item to be contained in the line
+         * @param item1     the second item to be contained in the line
+         * @param item2     the third item to be contained in the line
+         * @param item3     the fourth item to be contained in the line
+         * @param item4     the fifth item to be contained in the line
          */
         public void line(Item item0, Item item1, Item item2, Item item3, Item item4)
             {
-            ArrayList<Item> items = new ArrayList<Item>();
-            items.add(item0);
-            items.add(item1);
-            items.add(item2);
-            items.add(item3);
-            items.add(item4);
-            this.line(items);
+            this.line(new Item[] {item0, item1, item2, item3, item4});
             }
         /**
          * Add a line to the dashboard containing the indicated items
+         * 
+         * @param items     the list of items to be contained in the line
          */
-        public void line(List<Item> items)
+        public void line(Item[] items)
             {
             synchronized (this.getLock())
                 {
-                Line line = new Line();
-                line.items = items;
+                Line line = new Line(items);
                 this.lines.add(line);
                 }
             TelemetryDashboardAndLog.this.updateLogCapacity();
             }
-
+        
         //------------------------------------------------------------------------------------------
         // Emitting
         //------------------------------------------------------------------------------------------
 
         /**
-         * Update the driver station view of the dashboard.
+         * If sufficient time has elapsed since the last driver station refresh,
+         * evaluate all the items on all the dashboard lines and update the driver
+         * station screen.
+         * 
+         * @see #msUpdateInterval
+         * @see TelemetryDashboardAndLog#update() 
          */
         public void update()
             {
@@ -217,12 +280,21 @@ public class TelemetryDashboardAndLog
         // State
         //------------------------------------------------------------------------------------------
 
-        private Queue<String> logQueue = new LinkedList<>();
+        private Vector<String> logQueue = new Vector<String>();
         private boolean       newLogMessagesAvailable = false;
         private int           capacity = 0;     // this gets automatically computed
 
         // We just use the outer class so as to *mindlessly* avoid any potential deadlocks
         private Object getLock() { return TelemetryDashboardAndLog.this; }
+
+        /**
+         * Is the log shown in reversed order instead of normal order?
+         * <p></p>
+         * If true, older log messages are displayed at the top of the log, newer messages at the bottom.
+         * <p></p>
+         * If false, newer messages are on top, older messages at the bottom.
+         */
+        public boolean displayOldToNew = true;
 
         //------------------------------------------------------------------------------------------
         // Operations
@@ -250,7 +322,7 @@ public class TelemetryDashboardAndLog
                 {
                 while (this.logQueue.size() > this.capacity)
                     {
-                    this.logQueue.remove();
+                    this.logQueue.remove(0);
                     }
                 }
             }
@@ -263,7 +335,8 @@ public class TelemetryDashboardAndLog
     //----------------------------------------------------------------------------------------------
 
     private long                    nanoLastUpdate = 0;
-    private int                     singletonKey = SynchronousOpMode.getNewExecuteSingletonKey();
+    private int                     telemetryMaxLineCount = 9;
+    private final int               singletonKey = SynchronousOpMode.staticGetNewSingletonKey();
 
     /**
      * 'dashboard' provides a means to declaratively indicate telemetry items of interest.
@@ -278,31 +351,50 @@ public class TelemetryDashboardAndLog
      */
     public final Log                log;
     /**
-     * Advanced: 'raw' provides access to the lower level (ie: non-dashboard/log) telemetry
-     * API.
-     *
-     * The ThunkedTelemetry object here can only be called from a synchronous thread; the
-     * robot-controller-runtime-provided object, callable on the loop() thread, can be retrieved using
-     * the raw.getTarget() method.
+     * Advanced: 'target' is the lower level (ie: non-dashboard/log) telemetry
+     * object from the robot controller runtime.
      */
-    public final ThunkedTelemetry   raw;
-    /**
-     * 'telemetryDisplayLineCount' is the number of visible lines we have room for on the
-     * driver station.
-     */
-    public int                      telemetryDisplayLineCount = 7;
+    public final Telemetry          target;
 
     //----------------------------------------------------------------------------------------------
     // Construction
     //----------------------------------------------------------------------------------------------
 
+    /**
+     * Instantiate a new telemetry dashboard and log
+     * @param telemetry the robot controller runtime telemetry object
+     */
     public TelemetryDashboardAndLog(Telemetry telemetry)
         {
-        this.raw       = ThunkedTelemetry.create(telemetry);
+        this.target    = telemetry;
         this.dashboard = new Dashboard();
         this.log       = new Log();
         //
         this.dashboard.clear();
+        }
+
+    /**
+     * 'telemetryDisplayLineCount' is the number of visible on the driver station that
+     * we use in rendering the dashboard plus accumulated log. This method returns the
+     * current value of that variable.
+     * 
+     * @return the current maximum number of lines displayed by the log
+     * @see #setDisplayMaxLineCount(int) 
+     */
+    public int getTelemetryMaxLineCount() 
+        { 
+        return this.telemetryMaxLineCount; 
+        }
+    /**
+     * Set the maximum number of lines displayed in the log.
+     * 
+     * @param count the maximum number of lines to display in the log
+     * @see #getTelemetryMaxLineCount() 
+     */
+    public void setDisplayMaxLineCount(int count)
+        {
+        this.telemetryMaxLineCount = count;
+        this.updateLogCapacity();
         }
 
     //----------------------------------------------------------------------------------------------
@@ -336,7 +428,7 @@ public class TelemetryDashboardAndLog
             {
             @Override public void doAction()
                 {
-                log.capacity = telemetryDisplayLineCount - dashboard.lines.size();
+                log.capacity = telemetryMaxLineCount - dashboard.lines.size();
                 log.prune();
                 }
             });
@@ -344,14 +436,18 @@ public class TelemetryDashboardAndLog
 
     private static String getKey(int iLine)
         {
-        return "line" + String.format("%04d", iLine);
+        // At present (Aug 8, 2015), the driver station both sorts by the key we return here
+        // but also DISPLAYS it! Ugh. So we try to conserve space. And we use Unicode characters
+        // that don't actually take up space on the display.
+        return String.format("%c", 0x180 + iLine);
         }
 
     /**
-     * At the next available loop() thread call, update the telemetry to reflect the state
-     * of the dashboard and log.
+     * Equivalent to {@link Dashboard#update() Dashboard.update()} 
+     * 
+     * @see Dashboard#update()
      */
-    private void update()
+    public void update()
         {
         // We need both the dashboard and log locked while we copy their contents
         this.synchronizeDashboardAndLog(new IAction()
@@ -370,6 +466,12 @@ public class TelemetryDashboardAndLog
                     // Ok, we're going to update the telemetry: get a copy of all the data to output.
                     // We only use strings as values. Keys we make up in alphabetical order so as
                     // to maintaining the ordering in which they are created.
+
+                    for (IAction action : dashboard.actions)
+                        {
+                        action.doAction();
+                        }
+
                     final Vector<String> keys = new Vector<String>();
                     final Vector<String> values = new Vector<String>();
                     int iLine = 0;
@@ -381,20 +483,22 @@ public class TelemetryDashboardAndLog
                         iLine++;
                         }
 
-                    for (String s : log.logQueue)
+                    int size = log.logQueue.size();
+                    for (int i=0; i < size; i++)
                         {
+                        String s = log.displayOldToNew ? log.logQueue.elementAt(i) : log.logQueue.elementAt(size-1-i);
                         keys.add(getKey(iLine));
                         values.add(s);
                         iLine++;
                         }
-
+                    
                     IAction action = new IAction()
                         {
                         @Override public void doAction()
                             {
                             for (int i = 0; i < keys.size(); i++)
                                 {
-                                TelemetryDashboardAndLog.this.raw.target.addData(
+                                TelemetryDashboardAndLog.this.target.addData(
                                         keys.elementAt(i),
                                         values.elementAt(i));
                                 }

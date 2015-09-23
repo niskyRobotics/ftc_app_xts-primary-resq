@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import ftc.team6460.javadeck.api.Maintainable;
 import ftc.team6460.javadeck.api.Maintainer;
 import ftc.team6460.javadeck.ftc.peripheral.FtcPeripheralsFactory;
-import org.swerverobotics.library.IAction;
+import org.swerverobotics.library.interfaces.IAction;
 import org.swerverobotics.library.SynchronousOpMode;
 
 import java.util.HashSet;
