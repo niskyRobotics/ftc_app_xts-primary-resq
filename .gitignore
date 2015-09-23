@@ -4,7 +4,7 @@
 
 # Java class files
 *.class
-
+gradle/wrapper/gradle-wrapper.properties
 # generated files
 bin/
 gen/
