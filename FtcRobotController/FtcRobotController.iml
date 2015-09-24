@@ -81,17 +81,19 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/reports" />
+      <excludeFolder url="file://$MODULE_DIR$/build/test-results" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="wp2p" level="project" />
     <orderEntry type="library" exported="" name="libdc1394-2.2.3-0.11" level="project" />
-    <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="flycapture-2.7.3.19-0.11" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="rcore" level="project" />
-    <orderEntry type="library" exported="" name="mr" level="project" />
     <orderEntry type="library" exported="" name="guava-19.0-rc1" level="project" />
+    <orderEntry type="library" exported="" name="mr" level="project" />
     <orderEntry type="library" exported="" name="ffmpeg-2.6.1-0.11" level="project" />
     <orderEntry type="library" exported="" name="opencv-2.4.11-0.11" level="project" />
     <orderEntry type="library" exported="" name="android-support-v4" level="project" />
@@ -103,8 +105,8 @@
     <orderEntry type="library" exported="" name="javacpp-0.11" level="project" />
     <orderEntry type="library" exported="" name="libfreenect-0.5.2-0.11" level="project" />
     <orderEntry type="library" exported="" name="javadeck-all-0.1-alpha-1" level="project" />
-    <orderEntry type="library" exported="" name="videoinput-0.200-0.11" level="project" />
     <orderEntry type="library" exported="" name="flandmark-1.07-0.11" level="project" />
+    <orderEntry type="library" exported="" name="videoinput-0.200-0.11" level="project" />
     <orderEntry type="library" exported="" name="netty-all-4.0.30.Final" level="project" />
     <orderEntry type="library" exported="" name="FtcCommon-release-" level="project" />
     <orderEntry type="module" module-name="OpModeLibrary" exported="" />
