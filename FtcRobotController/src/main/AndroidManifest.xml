@@ -78,7 +78,8 @@
         </activity>
         <activity
                 android:name="com.qualcomm.ftccommon.FtcWifiChannelSelectorActivity"
-                android:label="Wifi Channel Selector">
+                android:label="Wifi Channel Selector"
+                tools:replace="android:label">
         </activity>
 
         <service

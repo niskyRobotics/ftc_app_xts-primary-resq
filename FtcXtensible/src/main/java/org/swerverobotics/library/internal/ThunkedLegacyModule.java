@@ -1,6 +1,7 @@
 package org.swerverobotics.library.internal;
 
 import com.qualcomm.robotcore.hardware.*;
+import com.qualcomm.robotcore.util.SerialNumber;
 import org.swerverobotics.library.interfaces.*;
 import java.util.concurrent.locks.Lock;
 
@@ -81,29 +82,70 @@ public class ThunkedLegacyModule implements LegacyModule, IThunkWrapper<LegacyMo
     // LegacyModule interface
     //----------------------------------------------------------------------------------------------
 
-    @Override public void enableNxtI2cReadMode(final int physicalPort, final int i2cAddress, final int memAddress, final int length)
+        @Override
+        public SerialNumber getSerialNumber() {
+            return (new ThunkForReading<SerialNumber>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getSerialNumber();
+                }
+            }).doUntrackedReadOperation();
+        }
+
+        @Override public void enableI2cReadMode(final int physicalPort, final int i2cAddress, final int memAddress, final int length)
         {
         (new ThunkForWriting()
             {
             @Override protected void actionOnLoopThread()
                 {
-                target.enableNxtI2cReadMode(physicalPort, i2cAddress, memAddress, length);
+                target.enableI2cReadMode(physicalPort, i2cAddress, memAddress, length);
                 }
             }).doWriteOperation();
         }
 
-    @Override public void enableNxtI2cWriteMode(final int physicalPort, final int i2cAddress, final int memAddress, final int length)
+    @Override public void enableI2cWriteMode(final int physicalPort, final int i2cAddress, final int memAddress, final int length)
         {
         (new ThunkForWriting()
             {
             @Override protected void actionOnLoopThread()
                 {
-                target.enableNxtI2cWriteMode(physicalPort, i2cAddress, memAddress, length);
+                target.enableI2cWriteMode(physicalPort, i2cAddress, memAddress, length);
                 }
             }).doWriteOperation();
         }
 
-    @Override public void enableAnalogReadMode(final int physicalPort)
+        @Override
+        public byte[] getCopyOfReadBuffer(final int i) {
+            return (new ThunkForReading<byte[]>() {
+                @Override
+                protected void actionOnLoopThread() {
+                    this.result = target.getCopyOfReadBuffer(i);
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public byte[] getCopyOfWriteBuffer(final int i) {
+            return (new ThunkForReading<byte[]>() {
+                @Override
+                protected void actionOnLoopThread() {
+                    this.result = target.getCopyOfWriteBuffer(i);
+                }
+            }).doReadOperation();
+        }
+
+        @Override
+        public void copyBufferIntoWriteBuffer(final int i, final byte[] bytes) {
+            (new ThunkForWriting() {
+                @Override
+                protected void actionOnLoopThread() {
+                    copyBufferIntoWriteBuffer(i, bytes);
+                }
+            }).doWriteOperation();
+        }
+
+        @Override public void enableAnalogReadMode(final int physicalPort)
         {
         (new ThunkForWriting()
             {
@@ -191,29 +233,61 @@ public class ThunkedLegacyModule implements LegacyModule, IThunkWrapper<LegacyMo
             }).doReadOperation();
         }
 
-    @Override public void setNxtI2cPortActionFlag(final int physicalPort)
+    @Override public void setI2cPortActionFlag(final int physicalPort)
         {
         (new ThunkForWriting()
             {
             @Override protected void actionOnLoopThread()
                 {
-                target.setNxtI2cPortActionFlag(physicalPort);
+                target.setI2cPortActionFlag(physicalPort);
                 }
             }).doWriteOperation();
         }
 
-    @Override public boolean isNxtI2cPortActionFlagSet(final int physicalPort)
+    @Override public boolean isI2cPortActionFlagSet(final int physicalPort)
         {
         return (new ThunkForReading<Boolean>()
             {
             @Override protected void actionOnLoopThread()
                 {
-                this.result = target.isNxtI2cPortActionFlagSet(physicalPort);
+                this.result = target.isI2cPortActionFlagSet(physicalPort);
                 }
             }).doReadOperation();
         }
 
-    @Override public void readI2cCacheFromModule(final int physicalPort)
+        @Override
+        public void readI2cCacheFromController(final int physicalPort) {
+            (new ThunkForWriting() {
+                @Override
+                protected void actionOnLoopThread() {
+                    target.readI2cCacheFromController(physicalPort);
+                }
+            }).doWriteOperation();
+        }
+
+
+        @Override
+        public void writeI2cCacheToController(final int physicalPort) {
+            (new ThunkForWriting() {
+                @Override
+                protected void actionOnLoopThread() {
+                    target.writeI2cCacheToController(physicalPort);
+                }
+            }).doWriteOperation();
+        }
+
+
+        @Override
+        public void writeI2cPortFlagOnlyToController(final int physicalPort) {
+            (new ThunkForWriting() {
+                @Override
+                protected void actionOnLoopThread() {
+                    target.writeI2cPortFlagOnlyToController(physicalPort);
+                }
+            }).doWriteOperation();
+        }
+
+        @Override public void readI2cCacheFromModule(final int physicalPort)
         {
         (new ThunkForWriting()
             {
@@ -268,13 +342,13 @@ public class ThunkedLegacyModule implements LegacyModule, IThunkWrapper<LegacyMo
         }).doReadOperation();
         }
     
-    @Override public void registerForPortReadyCallback(final LegacyModule.PortReadyCallback callback, final int physicalPort)
+    @Override public void registerForI2cPortReadyCallback(final LegacyModule.I2cPortReadyCallback callback, final int physicalPort)
         {
         (new ThunkForWriting()
             {
             @Override protected void actionOnLoopThread()
                 {
-                target.registerForPortReadyCallback(callback, physicalPort);
+                target.registerForI2cPortReadyCallback(callback, physicalPort);
                 }
             }).doWriteOperation();
         }

@@ -68,8 +68,19 @@ public class ThunkedAnalogOutputController implements AnalogOutputController, IT
                 }
             }).doUntrackedReadOperation();
         }
-    
-    @Override public SerialNumber getSerialNumber()
+
+        @Override
+        public String getConnectionInfo() {
+            return (new ThunkForReading<String>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getConnectionInfo();
+                }
+            }).doUntrackedReadOperation();
+        }
+
+        @Override public SerialNumber getSerialNumber()
         {
         return (new ThunkForReading<SerialNumber>()
             {

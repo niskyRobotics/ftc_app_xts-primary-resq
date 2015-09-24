@@ -81,21 +81,21 @@ public final class ClassFactory
         return createI2cDeviceClient(ii2cDevice, i2cAddr8Bit, initialRegisterWindow);    
         }
 
-    /**
-     * Instantiate an I2cDeviceClient on a LegacyModule using a given port and i2cAddr
-     * @param legacyModule              the legacy module to use
-     * @param port                      the port to use on that controller
-     * @param i2cAddr8Bit               the I2C address to talk to through that port. Ignored if less than zero.
-     * @param initialRegisterWindow     the initial register window to read. May be null.
-     * @return                          the returned wrapper
-     * 
-     * @see #createI2cDeviceClient(I2cController, int, int, II2cDeviceClient.RegWindow) 
-     */
-    public static II2cDeviceClient createI2cDeviceClient(LegacyModule legacyModule, int port, int i2cAddr8Bit, II2cDeviceClient.RegWindow initialRegisterWindow)
-        {
-        II2cDevice ii2cDevice = new I2cDeviceOnLegacyModule(legacyModule, port);
-        return createI2cDeviceClient(ii2cDevice, i2cAddr8Bit, initialRegisterWindow);
-        }
+//    /**
+//     * Instantiate an I2cDeviceClient on a LegacyModule using a given port and i2cAddr
+//     * @param legacyModule              the legacy module to use
+//     * @param port                      the port to use on that controller
+//     * @param i2cAddr8Bit               the I2C address to talk to through that port. Ignored if less than zero.
+//     * @param initialRegisterWindow     the initial register window to read. May be null.
+//     * @return                          the returned wrapper
+//     *
+//     * @see #createI2cDeviceClient(I2cController, int, int, II2cDeviceClient.RegWindow)
+//     */
+//    public static II2cDeviceClient createI2cDeviceClient(LegacyModule legacyModule, int port, int i2cAddr8Bit, II2cDeviceClient.RegWindow initialRegisterWindow)
+//        {
+//        II2cDevice ii2cDevice = new I2cDeviceOnLegacyModule(legacyModule, port);
+//        return createI2cDeviceClient(ii2cDevice, i2cAddr8Bit, initialRegisterWindow);
+//        }
 
     /**
      * Instantiate an I2cDeviceClient wrapper around an I2cDevice using the I2C address currently found therein

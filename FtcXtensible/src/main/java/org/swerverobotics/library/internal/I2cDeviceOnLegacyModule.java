@@ -6,7 +6,7 @@ import java.util.concurrent.locks.Lock;
 /**
  * This implements an the II2cDevice interface to a legacy I2C device
  */
-public final class I2cDeviceOnLegacyModule implements II2cDevice, LegacyModule.PortReadyCallback
+public final class I2cDeviceOnLegacyModule implements II2cDevice, LegacyModule.I2cPortReadyCallback
     {
     //----------------------------------------------------------------------------------------------
     // State
@@ -15,7 +15,7 @@ public final class I2cDeviceOnLegacyModule implements II2cDevice, LegacyModule.P
     private LegacyModule controller;
     private int          port;
     private int          i2cAddr8Bit;
-    private LegacyModule.PortReadyCallback callback;
+    private LegacyModule.I2cPortReadyCallback callback;
 
     //----------------------------------------------------------------------------------------------
     // Construction
@@ -40,7 +40,7 @@ public final class I2cDeviceOnLegacyModule implements II2cDevice, LegacyModule.P
 
     @Override public String getConnectionInfo()
         {
-        return String.format("%s; port: %d", controller.getConnectionInfo(), this.port); 
+        return String.format("%s; port: %d", controller.getConnectionInfo(), this.port);
         }
 
     @Override public int getVersion()
@@ -70,12 +70,12 @@ public final class I2cDeviceOnLegacyModule implements II2cDevice, LegacyModule.P
 
     @Override public void enableI2cReadMode(int ib, int cb)
         {
-        this.controller.enableNxtI2cReadMode(port, i2cAddr8Bit, ib, cb);
+        this.controller.enableI2cWriteMode(port, i2cAddr8Bit, ib, cb);
         }
 
     @Override public void enableI2cWriteMode(int ib, int cb)
         {
-        this.controller.enableNxtI2cReadMode(port, i2cAddr8Bit, ib, cb);
+        this.controller.enableI2cReadMode(port, i2cAddr8Bit, ib, cb);
         }
 
     @Override public byte[] getI2cReadCache()
@@ -100,7 +100,7 @@ public final class I2cDeviceOnLegacyModule implements II2cDevice, LegacyModule.P
 
     @Override public boolean isI2cPortActionFlagSet()
         {
-        return this.controller.isNxtI2cPortActionFlagSet(port);
+        return this.controller.isI2cPortActionFlagSet(port);
         }
 
     @Override public boolean isI2cPortInReadMode()
@@ -125,7 +125,7 @@ public final class I2cDeviceOnLegacyModule implements II2cDevice, LegacyModule.P
 
     @Override public void setI2cPortActionFlag()
         {
-        this.controller.setNxtI2cPortActionFlag(port);
+        this.controller.setI2cPortActionFlag(port);
         }
 
     @Override public void writeI2cCacheToModule()
@@ -141,7 +141,7 @@ public final class I2cDeviceOnLegacyModule implements II2cDevice, LegacyModule.P
     @Override public synchronized void registerForI2cPortReadyCallback(I2cController.I2cPortReadyCallback callack)
         {
         this.callback = callback;
-        this.controller.registerForPortReadyCallback(this, port);
+        this.controller.registerForI2cPortReadyCallback(this, port);
         }
 
     @Override public synchronized void deregisterForPortReadyCallback()
@@ -149,7 +149,7 @@ public final class I2cDeviceOnLegacyModule implements II2cDevice, LegacyModule.P
         this.controller.deregisterForPortReadyCallback(port);
         this.callback = null;
         }
-    
+
     @Override public synchronized void portIsReady(int port)
         {
         if (this.callback != null)

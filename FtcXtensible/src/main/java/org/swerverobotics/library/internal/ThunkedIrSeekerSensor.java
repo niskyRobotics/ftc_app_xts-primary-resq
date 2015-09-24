@@ -125,7 +125,7 @@ public class ThunkedIrSeekerSensor extends IrSeekerSensor implements IThunkedRea
     private boolean isTargetLegacy()
     // Are we hooked to a legacy sensor, and so need to do the read-or-write-not-both dance? 
         {
-        return this.target instanceof LegacyModule.PortReadyCallback;
+        return this.target instanceof LegacyModule.I2cPortReadyCallback;
         }
     private boolean isOffline()
         {
@@ -170,7 +170,29 @@ public class ThunkedIrSeekerSensor extends IrSeekerSensor implements IThunkedRea
     // IrSeekerSensor
     //----------------------------------------------------------------------------------------------
 
-    @Override public void setMode(final IrSeekerSensor.Mode mode)
+        @Override
+        public void setSignalDetectedThreshold(final double v) {
+            (new ThunkForWriting()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    target.setSignalDetectedThreshold(v);
+                }
+            }).doWriteOperation();
+        }
+
+        @Override
+        public double getSignalDetectedThreshold() {
+            return (new ThunkForReading<Double>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getSignalDetectedThreshold();
+                }
+            }).doReadOperation(this);
+        }
+
+        @Override public void setMode(final IrSeekerSensor.Mode mode)
     // For legacy IR seekers, setting the mode puts signalDetected(), getAngle(), getStrength(), 
     // and getIndividualSensors() out of commission, as it puts the NXT i2c port into write mode.
     // They come back into commission once the port gets auto-reset to read mode 
@@ -237,6 +259,28 @@ public class ThunkedIrSeekerSensor extends IrSeekerSensor implements IThunkedRea
                 this.result = target.getIndividualSensors();
                 }
             }).doReadOperation(this);
+        }
+
+        @Override
+        public void setI2cAddress(final int i) {
+            (new ThunkForWriting()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    target.setI2cAddress(i);
+                }
+            }).doWriteOperation();
+        }
+
+        @Override
+        public int getI2cAddress() {
+            return (new ThunkForReading<Integer>()
+            {
+                @Override protected void actionOnLoopThread()
+                {
+                    this.result = target.getI2cAddress();
+                }
+            }).doUntrackedReadOperation();
         }
 
     }

@@ -113,7 +113,7 @@ public class ThunkedCompassSensor extends CompassSensor implements IThunkedReadW
     private boolean isTargetLegacy()
         // Are we hooked to a legacy sensor, and so need to do the read-or-write-not-both dance? 
         {
-        return this.target instanceof LegacyModule.PortReadyCallback;
+        return this.target instanceof LegacyModule.I2cPortReadyCallback;
         }
     private boolean isOffline()
         {

@@ -68,15 +68,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dependency-cache" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex-cache" />
-<<<<<<< HEAD
-=======
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/Analytics-release/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/FtcCommon-release/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/Hardware-release/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/ModernRobotics-release/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/RobotCore-release/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/WirelessP2p-release/jars" />
->>>>>>> d6e9863612c043f403b037aac04428ee10e3b29e
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jacoco" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/javaResources" />
@@ -94,29 +85,28 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="d2xx" level="project" />
     <orderEntry type="library" exported="" name="wp2p" level="project" />
     <orderEntry type="library" exported="" name="libdc1394-2.2.3-0.11" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="flycapture-2.7.3.19-0.11" level="project" />
     <orderEntry type="library" exported="" name="rcore" level="project" />
-    <orderEntry type="library" exported="" name="guava-19.0-rc1" level="project" />
     <orderEntry type="library" exported="" name="mr" level="project" />
+    <orderEntry type="library" exported="" name="guava-19.0-rc1" level="project" />
     <orderEntry type="library" exported="" name="ffmpeg-2.6.1-0.11" level="project" />
     <orderEntry type="library" exported="" name="opencv-2.4.11-0.11" level="project" />
     <orderEntry type="library" exported="" name="android-support-v4" level="project" />
     <orderEntry type="library" exported="" name="javacv-0.11" level="project" />
+    <orderEntry type="library" exported="" name="hw" level="project" />
     <orderEntry type="library" exported="" name="analytics" level="project" />
     <orderEntry type="library" exported="" name="multidex-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="artoolkitplus-2.3.1-0.11" level="project" />
     <orderEntry type="library" exported="" name="javacpp-0.11" level="project" />
     <orderEntry type="library" exported="" name="libfreenect-0.5.2-0.11" level="project" />
-    <orderEntry type="library" exported="" name="flandmark-1.07-0.11" level="project" />
     <orderEntry type="library" exported="" name="javadeck-all-0.1-alpha-1" level="project" />
     <orderEntry type="library" exported="" name="videoinput-0.200-0.11" level="project" />
+    <orderEntry type="library" exported="" name="flandmark-1.07-0.11" level="project" />
     <orderEntry type="library" exported="" name="netty-all-4.0.30.Final" level="project" />
     <orderEntry type="library" exported="" name="FtcCommon-release-" level="project" />
-<<<<<<< HEAD
     <orderEntry type="module" module-name="OpModeLibrary" exported="" />
     <orderEntry type="module" module-name="FtcXtensible" exported="" />
   </component>
@@ -324,10 +314,5 @@
         <entry key="STYLE" value="true" />
       </map>
     </option>
-=======
-    <orderEntry type="library" exported="" name="WirelessP2p-release-" level="project" />
-    <orderEntry type="library" exported="" name="Hardware-release-" level="project" />
-    <orderEntry type="library" exported="" name="RobotCore-release-" level="project" />
->>>>>>> d6e9863612c043f403b037aac04428ee10e3b29e
   </component>
 </module>
