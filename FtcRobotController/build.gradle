@@ -18,9 +18,30 @@ android {
     }
 }
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
 repositories {
     flatDir {
         dirs 'libs'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        flatDir {
+            dirs 'out'
+        }
     }
 }
 
@@ -33,6 +54,7 @@ dependencies {
     compile(name: 'analytics', ext: 'jar')
     compile(name: 'javadeck-all-0.1-alpha-1', ext: 'jar')
     compile files('libs/android-support-v4.jar')
+
     compile files('libs/netty-all-4.0.30.Final.jar')
     compile 'com.google.guava:guava:19.0-rc1'
     compile 'com.google.code.gson:gson:2.3.1'
@@ -41,4 +63,11 @@ dependencies {
     compile group: 'org.bytedeco', name: 'javacv', version: '0.11'
     compile project(':FtcXtensible')
     compile project(':OpModeLibrary')
+
+//    compile (name:'RobotCore-release', ext:'aar')
+//    compile (name:'Hardware-release', ext:'aar')
+//    compile (name:'FtcCommon-release', ext:'aar')
+//    compile (name:'ModernRobotics-release', ext:'aar')
+//    compile (name:'Analytics-release', ext:'aar')
+//    compile (name:'WirelessP2p-release', ext:'aar')
 }

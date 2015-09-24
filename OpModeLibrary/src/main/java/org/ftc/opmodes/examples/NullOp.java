@@ -50,6 +50,7 @@ public class NullOp extends OpMode {
     private String startDate;
     private ElapsedTime runtime = new ElapsedTime();
 
+<<<<<<< HEAD:OpModeLibrary/src/main/java/org/ftc/opmodes/examples/NullOp.java
     /*
      * Code to run when the op mode is first enabled goes here
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
@@ -59,6 +60,22 @@ public class NullOp extends OpMode {
         startDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
         runtime.reset();
     }
+=======
+  @Override
+  public void init() {
+  }
+
+  /*
+     * Code to run when the op mode is first enabled goes here
+     * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
+     */
+  @Override
+  public void init_loop() {
+    startDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
+    runtime.reset();
+    telemetry.addData("Null Op Init Loop", runtime.toString());
+  }
+>>>>>>> d6e9863612c043f403b037aac04428ee10e3b29e:FtcRobotController/src/main/java/com/qualcomm/ftcrobotcontroller/opmodes/NullOp.java
 
     /*
      * This method will be called repeatedly in stopMode loop

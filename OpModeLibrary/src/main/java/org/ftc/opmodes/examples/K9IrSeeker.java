@@ -60,6 +60,7 @@ public class K9IrSeeker extends OpMode {
     Servo arm;
     IrSeekerSensor irSeeker;
 
+<<<<<<< HEAD:OpModeLibrary/src/main/java/org/ftc/opmodes/examples/K9IrSeeker.java
     /**
      * Constructor
      */
@@ -74,6 +75,15 @@ public class K9IrSeeker extends OpMode {
      */
     @Override
     public void init() {
+=======
+	/*
+	 * Code to run when the op mode is first enabled goes here
+	 * 
+	 * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
+	 */
+	@Override
+	public void init() {
+>>>>>>> d6e9863612c043f403b037aac04428ee10e3b29e:FtcRobotController/src/main/java/com/qualcomm/ftcrobotcontroller/opmodes/K9IrSeeker.java
 
 		/*
          * Use the hardwareMap to get the dc motors and servos by name.

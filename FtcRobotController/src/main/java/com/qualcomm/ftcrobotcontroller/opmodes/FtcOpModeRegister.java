@@ -361,4 +361,40 @@ public class FtcOpModeRegister implements OpModeRegister {
         }
         return name;
     }
+
+    /*
+     * Uncomment any of the following lines if you want to register an op mode.
+     */
+
+    //manager.register("AdafruitRGBExample", AdafruitRGBExample.class);
+    //manager.register("MRRGBExample", MRRGBExample.class);
+    //manager.register("ColorSensorDriver", ColorSensorDriver.class);
+    //manager.register("HTRGBExample", HTRGBExample.class);
+
+    //manager.register("IrSeekerOp", IrSeekerOp.class);
+    //manager.register("CompassCalibration", CompassCalibration.class);
+    //manager.register("I2cAddressChangeExample", LinearI2cAddressChange.class);
+
+
+    //manager.register("NxtTeleOp", NxtTeleOp.class);
+    
+    //manager.register("LinearK9TeleOp", LinearK9TeleOp.class);
+    //manager.register("LinearIrExample", LinearIrExample.class);
+
+    
+    //manager.register ("PushBotManual1", PushBotManual1.class);
+    //manager.register ("PushBotAutoSensors", PushBotAutoSensors.class);
+    //manager.register ("PushBotIrEvent", PushBotIrEvent.class);
+    
+    //manager.register ("PushBotManualSensors", PushBotManualSensors.class);
+    //manager.register ("PushBotOdsDetectEvent", PushBotOdsDetectEvent.class);
+    //manager.register ("PushBotOdsFollowEvent", PushBotOdsFollowEvent.class);
+    //manager.register ("PushBotTouchEvent", PushBotTouchEvent.class);    
+    
+    //manager.register("PushBotDriveTouch", PushBotDriveTouch.class);
+    //manager.register("PushBotIrSeek", PushBotIrSeek.class);
+    //manager.register("PushBotSquare", PushBotSquare.class);
+
+    
+
 }

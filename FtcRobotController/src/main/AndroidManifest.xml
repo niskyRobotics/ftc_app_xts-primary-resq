@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           android:name="android.support.multidex.MultiDexApplication"
           package="com.qualcomm.ftcrobotcontroller"
-          android:versionCode="1"
-          android:versionName="1.0">
+          android:versionCode="3"
+          android:versionName="User Developed App">
 
     <uses-permission
             android:name="android.permission.ACCESS_WIFI_STATE"
@@ -68,6 +68,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -116,5 +117,6 @@
         </activity>
 
     </application>
+
 
 </manifest>

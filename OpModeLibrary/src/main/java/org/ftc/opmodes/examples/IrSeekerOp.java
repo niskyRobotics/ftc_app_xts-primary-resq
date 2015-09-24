@@ -60,11 +60,23 @@ public class IrSeekerOp extends OpMode {
     DcMotor motorRight;
     DcMotor motorLeft;
 
+<<<<<<< HEAD:OpModeLibrary/src/main/java/org/ftc/opmodes/examples/IrSeekerOp.java
     @Override
     public void init() {
         irSeeker = hardwareMap.irSeekerSensor.get("ir_seeker");
         motorRight = hardwareMap.dcMotor.get("motor_2");
         motorLeft = hardwareMap.dcMotor.get("motor_1");
+=======
+  @Override
+  public void init() {
+    irSeeker = hardwareMap.irSeekerSensor.get("ir_seeker");
+    motorRight = hardwareMap.dcMotor.get("motor_2");
+    motorLeft = hardwareMap.dcMotor.get("motor_1");
+  }
+
+  @Override
+  public void start() {
+>>>>>>> d6e9863612c043f403b037aac04428ee10e3b29e:FtcRobotController/src/main/java/com/qualcomm/ftcrobotcontroller/opmodes/IrSeekerOp.java
 
         motorLeft.setDirection(DcMotor.Direction.REVERSE);
     }
@@ -82,6 +94,7 @@ public class IrSeekerOp extends OpMode {
             angle = irSeeker.getAngle();
             strength = irSeeker.getStrength();
 
+<<<<<<< HEAD:OpModeLibrary/src/main/java/org/ftc/opmodes/examples/IrSeekerOp.java
             // which direction should we move?
             if (angle < 0) {
                 // we need to move to the left
@@ -105,6 +118,31 @@ public class IrSeekerOp extends OpMode {
             motorRight.setPower(0.0);
             motorLeft.setPower(0.0);
         }
+=======
+      // which direction should we move?
+      if (angle < -20) {
+        // we need to move to the left
+        motorRight.setPower(MOTOR_POWER);
+        motorLeft.setPower(-MOTOR_POWER);
+      } else if (angle > 20) {
+        // we need to move to the right
+        motorRight.setPower(-MOTOR_POWER);
+        motorLeft.setPower(MOTOR_POWER);
+      } else if (strength < HOLD_IR_SIGNAL_STRENGTH) {
+        // the IR signal is weak, approach
+        motorRight.setPower(MOTOR_POWER);
+        motorLeft.setPower(MOTOR_POWER);
+      } else {
+        // the IR signal is strong, stay here
+        motorRight.setPower(0.0);
+        motorLeft.setPower(0.0);
+      }
+    } else {
+      // no IR signal is detected
+      motorRight.setPower(0.0);
+      motorLeft.setPower(0.0);
+    }
+>>>>>>> d6e9863612c043f403b037aac04428ee10e3b29e:FtcRobotController/src/main/java/com/qualcomm/ftcrobotcontroller/opmodes/IrSeekerOp.java
 
         telemetry.addData("angle", angle);
         telemetry.addData("strength", strength);
