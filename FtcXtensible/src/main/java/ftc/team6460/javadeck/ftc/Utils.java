@@ -24,6 +24,7 @@ public class Utils {
     public static double getSafeDoublePref(String s, SharedPreferences sp, double d){
         return safeDouble(sp.getString(s, Double.toString(d)), d);
     }
+
     public static int getSafeIntPref(String s, SharedPreferences sp, int d){
         return safeInt(sp.getString(s, Integer.toString(d)), d);
     }
