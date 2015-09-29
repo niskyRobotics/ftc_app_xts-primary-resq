@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.*;
 import android.widget.FrameLayout;
+import ftc.team6460.javadeck.ftc.vision.MatCallback;
 import ftc.team6460.javadeck.ftc.vision.OpenCvLegacyActivity;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_highgui;
@@ -30,7 +31,7 @@ public class ViewProcessedImageActivity extends Activity {
     private FrameLayout layout;
     private Preview mPreview;
     private int div;
-    private OpenCvLegacyActivity.MatCallback mc;
+    private MatCallback mc;
 
     Bitmap bmp;
     @Override
@@ -42,7 +43,7 @@ public class ViewProcessedImageActivity extends Activity {
         layout = new FrameLayout(this);
         mPreview = new Preview(this);
         Uri uri = getIntent().getParcelableExtra("file_uri");
-        mc = new OpenCvLegacyActivity.MatCallback() {
+        mc = new MatCallback() {
             opencv_core.CvMemStorage str = opencv_core.cvCreateMemStorage();
             opencv_core.Mat gray = new opencv_core.Mat();
             opencv_core.Mat grayHalf = new opencv_core.Mat();

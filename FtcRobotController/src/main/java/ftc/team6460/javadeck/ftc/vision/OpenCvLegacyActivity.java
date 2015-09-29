@@ -6,21 +6,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ImageFormat;
-import android.graphics.Paint;
 import android.hardware.Camera;
-import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.FrameLayout;
 import org.bytedeco.javacpp.*;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashSet;
 import java.util.List;
@@ -33,8 +27,8 @@ import static org.bytedeco.javacpp.opencv_core.*;
  */
 public class OpenCvLegacyActivity extends Activity {
     private FrameLayout layout;
-    protected FaceView faceView;
-    private Preview mPreview;
+    protected LegacyFaceView legacyFaceView;
+    private LegacyPreview mLegacyPreview;
 
     static HashSet<MatCallback> callbacks = new HashSet<>();
 
@@ -88,7 +82,7 @@ public class OpenCvLegacyActivity extends Activity {
     }
 
     public void onOrientationChanged(int orientation) {
-        setCameraDisplayOrientation(this, mPreview.mCID, mPreview.mCamera);
+        setCameraDisplayOrientation(this, mLegacyPreview.mCID, mLegacyPreview.mCamera);
     }
 
 
@@ -113,12 +107,12 @@ public class OpenCvLegacyActivity extends Activity {
         try {
 
             layout = new FrameLayout(this);
-            faceView = new FaceView(this);
-            mPreview = new Preview(this, faceView);
+            legacyFaceView = new LegacyFaceView(this);
+            mLegacyPreview = new LegacyPreview(this, legacyFaceView);
 
-            layout.addView(mPreview);
+            layout.addView(mLegacyPreview);
 
-            layout.addView(faceView);
+            layout.addView(legacyFaceView);
             setContentView(layout);
         } catch (IOException e) {
             e.printStackTrace();
@@ -127,24 +121,18 @@ public class OpenCvLegacyActivity extends Activity {
     }
 
 
-    public static interface MatCallback {
-
-        public void handleMat(Mat mat);
-
-        public void draw(Canvas canvas);
-    }
 }
 
 // ----------------------------------------------------------------------
 
-class FaceView extends View implements Camera.PreviewCallback {
+class LegacyFaceView extends View implements Camera.PreviewCallback {
     private opencv_core.Mat yuvImage = new opencv_core.Mat();
     private Mat rgbImage = new Mat();
     private opencv_core.CvMemStorage storage;
     private volatile boolean needAnotherFrame = true;
     Camera.Size size;
 
-    public class RunProcess implements Runnable {
+    public class LegacyRunProcess implements Runnable {
 
         @Override
         public void run() {
@@ -159,7 +147,7 @@ class FaceView extends View implements Camera.PreviewCallback {
         }
     }
 
-    public FaceView(OpenCvLegacyActivity context) throws IOException {
+    public LegacyFaceView(OpenCvLegacyActivity context) throws IOException {
         super(context);
 
 
@@ -220,7 +208,7 @@ class FaceView extends View implements Camera.PreviewCallback {
         }
         opencv_imgproc.cvtColor(yuvImage, rgbImage, opencv_imgproc.COLOR_YUV2RGB_NV21);
 
-        for (OpenCvLegacyActivity.MatCallback cb : OpenCvLegacyActivity.callbacks) {
+        for (MatCallback cb : OpenCvLegacyActivity.callbacks) {
             cb.handleMat(rgbImage);
         }
 
@@ -234,7 +222,7 @@ class FaceView extends View implements Camera.PreviewCallback {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        for (OpenCvLegacyActivity.MatCallback cb : OpenCvLegacyActivity.callbacks) {
+        for (MatCallback cb : OpenCvLegacyActivity.callbacks) {
             cb.draw(canvas);
         }
         super.onDraw(canvas);
@@ -243,12 +231,12 @@ class FaceView extends View implements Camera.PreviewCallback {
 
 // ----------------------------------------------------------------------
 
-class Preview extends SurfaceView implements SurfaceHolder.Callback {
+class LegacyPreview extends SurfaceView implements SurfaceHolder.Callback {
     SurfaceHolder mHolder;
     Camera mCamera;
     Camera.PreviewCallback previewCallback;
 
-    Preview(Context context, final Camera.PreviewCallback previewCallback) {
+    LegacyPreview(Context context, final Camera.PreviewCallback previewCallback) {
         super(context);
         this.previewCallback = previewCallback;
 
@@ -262,8 +250,8 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
                 mCamera.autoFocus(new Camera.AutoFocusCallback() {
                     @Override
                     public void onAutoFocus(boolean b, Camera camera) {
-                        if (previewCallback instanceof FaceView) {
-                            ((FaceView) previewCallback).status = ("Autofocus " + (b ? "succeeded" : "failed"));
+                        if (previewCallback instanceof LegacyFaceView) {
+                            ((LegacyFaceView) previewCallback).status = ("Autofocus " + (b ? "succeeded" : "failed"));
                         }
                     }
                 });
@@ -296,9 +284,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
             mCamera.release();
             mCamera = null;
         }
-        ((OpenCvLegacyActivity) this.getContext()).faceView.run = true;
-        ((OpenCvLegacyActivity) this.getContext()).faceView.imgProcessor = new Thread(((OpenCvLegacyActivity) this.getContext()).faceView.new RunProcess(), "openCvProcessorThread");
-        ((OpenCvLegacyActivity) this.getContext()).faceView.imgProcessor.start();
+        ((OpenCvLegacyActivity) this.getContext()).legacyFaceView.run = true;
+        ((OpenCvLegacyActivity) this.getContext()).legacyFaceView.imgProcessor = new Thread(((OpenCvLegacyActivity) this.getContext()).legacyFaceView.new LegacyRunProcess(), "openCvProcessorThread");
+        ((OpenCvLegacyActivity) this.getContext()).legacyFaceView.imgProcessor.start();
 
     }
 
@@ -313,7 +301,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
         mCamera.release();
 
         mCamera = null;
-        ((OpenCvLegacyActivity) this.getContext()).faceView.run = false;
+        ((OpenCvLegacyActivity) this.getContext()).legacyFaceView.run = false;
     }
 
 

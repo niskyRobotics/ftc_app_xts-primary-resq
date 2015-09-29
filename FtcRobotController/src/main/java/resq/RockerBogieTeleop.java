@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.qualcomm.ftcrobotcontroller.FtcRobotControllerActivity;
 import com.qualcomm.ftcrobotcontroller.R;
 import ftc.team6460.javadeck.ftc.Utils;
+import ftc.team6460.javadeck.ftc.vision.MatCallback;
 import ftc.team6460.javadeck.ftc.vision.OpenCvActivityHelper;
 import org.bytedeco.javacpp.opencv_core;
 import org.ftccommunity.ftcxtensible.opmodes.TeleOp;
@@ -33,7 +34,7 @@ public class RockerBogieTeleop extends RockerBogieCommon {
         scaledPower = Utils.getSafeDoublePref("lowspeed_power_scale", sharedPref, 0.50);
         this.gamepad1.setJoystickDeadzone(0.1f);
         final OpenCvActivityHelper ocvh = new OpenCvActivityHelper((FtcRobotControllerActivity)hardwareMap.appContext);
-        ocvh.addCallback(new OpenCvActivityHelper.MatCallback() {
+        ocvh.addCallback(new MatCallback() {
             @Override
             public void handleMat(opencv_core.Mat mat) {
                 Log.i("FRAME", "Processed a frame");

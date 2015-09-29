@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.bytedeco.javacpp.opencv_core.*;
 
@@ -32,13 +31,13 @@ public class OpenCvActivityHelper {
     private FtcRobotControllerActivity cx;
     CopyOnWriteArraySet<MatCallback> callbacks = new CopyOnWriteArraySet<>();
 
-static volatile boolean running;
+    static volatile boolean running;
 
-    public synchronized void addCallback(MatCallback cb){
+    public synchronized void addCallback(MatCallback cb) {
         callbacks.add(cb);
     }
 
-    public synchronized void removeCallback(MatCallback cb){
+    public synchronized void removeCallback(MatCallback cb) {
         callbacks.remove(cb);
     }
 
@@ -79,12 +78,8 @@ static volatile boolean running;
     }
 
 
-
-
-
-
     protected void onPause() {
-        running=false;
+        running = false;
 
     }
 
@@ -106,7 +101,7 @@ static volatile boolean running;
             layout.addView(mPreview);
 
             layout.addView(faceView);
-            ((FrameLayout)cx.findViewById(R.id.previewLayout)).addView(layout);
+            ((FrameLayout) cx.findViewById(R.id.previewLayout)).addView(layout);
         } catch (IOException e) {
             e.printStackTrace();
             new AlertDialog.Builder(cx).setMessage(e.getMessage()).create().show();
@@ -114,12 +109,6 @@ static volatile boolean running;
     }
 
 
-    public static interface MatCallback {
-
-        public void handleMat(Mat mat);
-
-        public void draw(Canvas canvas);
-    }
     // ----------------------------------------------------------------------
 
     class FaceView extends View implements Camera.PreviewCallback {
@@ -128,15 +117,17 @@ static volatile boolean running;
         private opencv_core.CvMemStorage storage;
         private volatile boolean needAnotherFrame = true;
         Camera.Size size;
+
         public class RunProcess implements Runnable {
 
             @Override
             public void run() {
                 while (run) {
                     if (arrPending != null) {
-                        if (arrData == null || arrData.length != arrPending.length) arrData = new byte[arrPending.length];
+                        if (arrData == null || arrData.length != arrPending.length)
+                            arrData = new byte[arrPending.length];
                         System.arraycopy(arrPending, 0, arrData, 0, arrPending.length);
-                        if(size!=null) processImage(arrData, size.width, size.height);
+                        if (size != null) processImage(arrData, size.width, size.height);
                         needAnotherFrame = true;
                     }
                 }
@@ -167,9 +158,9 @@ static volatile boolean running;
 
             {
                 // The camera has probably just been released, ignore.
-                Log.w("KP", e.getClass().getName() + ":" + e.getMessage());
+                Log.e("KP", e.getClass().getName() + ":" + e.getMessage());
                 for (StackTraceElement el : e.getStackTrace()) {
-                    Log.w("KP:ST", el.toString());
+                    Log.e("KP:ST", el.toString());
                 }
             }
 
@@ -185,13 +176,13 @@ static volatile boolean running;
             // First, downsample our image and convert it into a grayscale IplImage
             int bytesPerPixel = data.length / (width * height);
             //1620 for YUV NV21
-            if (yuvImage == null || yuvImage.arrayWidth() != width || yuvImage.arrayHeight() != height + (height/2)) {
+            if (yuvImage == null || yuvImage.arrayWidth() != width || yuvImage.arrayHeight() != height + (height / 2)) {
                 Log.i("PREPROC", "Remaking yuv");
-                yuvImage.create(height + (height/2), width, CV_8UC3);
+                yuvImage.create(height + (height / 2), width, CV_8UC1);
             }
             if (rgbImage == null || rgbImage.arrayWidth() != width || rgbImage.arrayHeight() != height) {
                 Log.i("PREPROC", "Remaking rgbImage: Currently " + rgbImage.arrayWidth() + "*" + rgbImage.arrayHeight());
-                rgbImage.create(height, width, CV_8UC3);
+                rgbImage.create(height, width, CV_8UC1);
             }
 
 
@@ -204,21 +195,18 @@ static volatile boolean running;
             }
             opencv_imgproc.cvtColor(yuvImage, rgbImage, opencv_imgproc.COLOR_YUV2RGB_NV21);
 
-            for(OpenCvActivityHelper.MatCallback cb : OpenCvActivityHelper.this.callbacks){
+            for (MatCallback cb : OpenCvActivityHelper.this.callbacks) {
                 cb.handleMat(rgbImage);
             }
 
             cvClearMemStorage(storage);
             postInvalidate();
         }
-
-        AtomicReference<opencv_features2d.KeyPoint> kpRef = new AtomicReference<>(null);
-        AtomicReference<Point2f> lineRef = new AtomicReference<>(null);
         public String status = "";
 
         @Override
         protected void onDraw(Canvas canvas) {
-            for(OpenCvActivityHelper.MatCallback cb : OpenCvActivityHelper.this.callbacks){
+            for (MatCallback cb : OpenCvActivityHelper.this.callbacks) {
                 cb.draw(canvas);
             }
             super.onDraw(canvas);
@@ -280,9 +268,9 @@ static volatile boolean running;
                 mCamera.release();
                 mCamera = null;
             }
-            OpenCvActivityHelper.this.faceView.run = true;
-            OpenCvActivityHelper.this.faceView.imgProcessor = new Thread(OpenCvActivityHelper.this.faceView.new RunProcess(), "openCvHelperThread");
-            OpenCvActivityHelper.this.faceView.imgProcessor.start();
+            (OpenCvActivityHelper.this).faceView.run = true;
+            (OpenCvActivityHelper.this).faceView.imgProcessor = new Thread(OpenCvActivityHelper.this.faceView.new RunProcess(), "openCvProcessorThread");
+            (OpenCvActivityHelper.this).faceView.imgProcessor.start();
 
         }
 
@@ -297,7 +285,7 @@ static volatile boolean running;
             mCamera.release();
 
             mCamera = null;
-            OpenCvActivityHelper.this.faceView.run = false;
+            OpenCvActivityHelper.this.running = false;
         }
 
 

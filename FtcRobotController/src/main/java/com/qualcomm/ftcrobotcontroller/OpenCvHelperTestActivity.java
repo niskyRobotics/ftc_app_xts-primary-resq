@@ -12,8 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import ftc.team6460.javadeck.ftc.vision.MatCallback;
 import ftc.team6460.javadeck.ftc.vision.OpenCvActivityHelper;
 import ftc.team6460.javadeck.ftc.vision.OpenCvLegacyActivity;
+import org.bytedeco.javacpp.indexer.UByteBufferIndexer;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_imgproc;
 
@@ -32,7 +34,7 @@ public class OpenCvHelperTestActivity extends Activity {
     protected int getDiv() {
         return Integer.parseInt(((EditText) findViewById(R.id.divFactor)).getText().toString());
     }
-
+    String state;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,7 @@ public class OpenCvHelperTestActivity extends Activity {
             @Override
             public synchronized void onClick(View view) {
                 Log.e("A", "CLICKED");
-                OpenCvLegacyActivity.addCallback(new OpenCvLegacyActivity.MatCallback() {
+                OpenCvLegacyActivity.addCallback(new MatCallback() {
                     opencv_core.CvMemStorage str = opencv_core.cvCreateMemStorage();
                     opencv_core.Mat gray = new opencv_core.Mat();
                     opencv_core.Mat grayHalf = new opencv_core.Mat();
@@ -60,20 +62,41 @@ public class OpenCvHelperTestActivity extends Activity {
 
                     @Override
                     public synchronized void handleMat(opencv_core.Mat mat) {
-                        Log.e("MAT", "PROCESSING");
-                        if (gray == null || gray.arrayWidth() != mat.arrayWidth() || gray.arrayHeight() != mat.arrayHeight()) {
-                            Log.i("PREPROC", "Remaking gray");
-                            gray.create(mat.arrayHeight(), mat.arrayWidth(), CV_8UC1);
+                        UByteBufferIndexer bi = mat.createIndexer(); // JNI call to get access to the image pixels
+                        int row = mat.rows() / 2; // find middle row
+                        int cols = mat.cols();
+                        int r = 0, g = 0, b = 0;
+                        for (int i = 0; i < cols / 2; i += 8) { // for each pixel in left: Find if more red, green, or blue
+                            int rV = bi.get(row, i, 0);
+                            int gV = bi.get(row, i, 1);
+                            int bV = bi.get(row, i, 2);
+                            Log.d("col", String.format("%d %d %d", rV, gV, bV));
+                            if (rV >= gV && rV >= bV) r++;
+                            else if (gV >= bV) g++;
+                            else b++;
                         }
-                        if (grayHalf == null || grayHalf.arrayWidth() != mat.arrayWidth() / div || grayHalf.arrayHeight() != mat.arrayHeight() / div) {
-                            Log.i("PREPROC", "Remaking grayhalf");
-                            grayHalf.create(mat.arrayHeight() / div, mat.arrayWidth() / div, CV_8UC1);
+                        int r2 = 0, g2 = 0, b2 = 0;
+                        for (int i = cols / 2; i < cols; i += 8) { // same thing for right side
+                            int rV = bi.get(row, i, 0);
+                            int gV = bi.get(row, i, 1);
+                            int bV = bi.get(row, i, 2);
+                            if (rV >= gV && rV >= bV) r2++;
+                            else if (gV >= bV) g2++;
+                            else b2++;
                         }
-                        cvtColor(mat, gray, COLOR_RGB2GRAY);
-                        cvResize(gray.asIplImage(), grayHalf.asIplImage());
-                        cvSmooth(grayHalf.asIplImage(), grayHalf.asIplImage());
 
-                        circles = cvHoughCircles(grayHalf.asIplImage(), str, opencv_imgproc.CV_HOUGH_GRADIENT, 1, grayHalf.rows() / 8, canny, ctr, 20, 400);
+                        String lS;
+                        String rS;
+                        // now "vote" on each side. Simple comparisons
+                        if (r >= g && r >= b) lS = "R";
+                        else if (g >= b) lS = "G";
+                        else lS = "B";
+                        Log.i("col", String.format("%d %d %d / %d %d %d", r, g, b, r2, g2, b2));
+                        if (r2 >= g2 && r2 >= b2) rS = "R";
+                        else if (g2 >= b2) rS = "G";
+                        else rS = "B";
+                        state = lS + rS;
+                        Log.i("STATE", state);
                     }
 
                     @Override
@@ -83,12 +106,7 @@ public class OpenCvHelperTestActivity extends Activity {
                         p.setStrokeWidth(4);
                         p.setStyle(Paint.Style.STROKE);
                         p.setColor(Color.GREEN);
-                        Log.i("CIRCLE", new CvPoint3D32f(cvGetSeqElem(circles, 0)).toString());
-
-                        for (int i = 0; (i < circles.total()) && (i < 20); i++) {
-                            opencv_core.CvPoint3D32f pt = new CvPoint3D32f(cvGetSeqElem(circles, i));
-                            canvas.drawCircle(pt.x() * div, pt.y() * div, pt.z() * div, p);
-                        }
+                        canvas.drawText(state, 200, 200, p);
                     }
                 });
 

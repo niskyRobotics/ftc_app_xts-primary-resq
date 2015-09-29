@@ -13,12 +13,11 @@ import com.qualcomm.ftcrobotcontroller.FtcRobotControllerActivity;
 import com.qualcomm.ftcrobotcontroller.R;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import ftc.team6460.javadeck.ftc.Utils;
+import ftc.team6460.javadeck.ftc.vision.MatCallback;
 import ftc.team6460.javadeck.ftc.vision.OpenCvActivityHelper;
-import org.bytedeco.javacpp.indexer.ByteIndexer;
 import org.bytedeco.javacpp.indexer.UByteBufferIndexer;
 import org.bytedeco.javacpp.opencv_core;
 import org.ftccommunity.ftcxtensible.opmodes.Autonomous;
-import org.ftccommunity.ftcxtensible.opmodes.TeleOp;
 
 /**
  * Created by akh06977 on 9/18/2015.
@@ -38,7 +37,7 @@ public class AutonCameraTestOpMode extends OpMode {
         scaledPower = Utils.getSafeDoublePref("lowspeed_power_scale", sharedPref, 0.50);
         this.gamepad1.setJoystickDeadzone(0.1f);
         final OpenCvActivityHelper ocvh = new OpenCvActivityHelper((FtcRobotControllerActivity) hardwareMap.appContext);
-        ocvh.addCallback(new OpenCvActivityHelper.MatCallback() { // rdepend callback
+        ocvh.addCallback(new MatCallback() { // rdepend callback
             @Override
             public void handleMat(opencv_core.Mat mat) { //called on every frame
                 UByteBufferIndexer bi = mat.createIndexer(); // JNI call to get access to the image pixels
@@ -47,8 +46,8 @@ public class AutonCameraTestOpMode extends OpMode {
                 int r = 0, g = 0, b = 0;
                 for (int i = 0; i < cols / 2; i += 8) { // for each pixel in left: Find if more red, green, or blue
                     int rV = bi.get(row, i, 0);
-                    int gV = bi.get(row, i, 0);
-                    int bV = bi.get(row, i, 0);
+                    int gV = bi.get(row, i, 1);
+                    int bV = bi.get(row, i, 2);
                     Log.d("col", String.format("%d %d %d", rV, gV, bV));
                     if (rV >= gV && rV >= bV) r++;
                     else if (gV >= bV) g++;
@@ -57,8 +56,8 @@ public class AutonCameraTestOpMode extends OpMode {
                 int r2 = 0, g2 = 0, b2 = 0;
                 for (int i = cols / 2; i < cols; i += 8) { // same thing for right side
                     int rV = bi.get(row, i, 0);
-                    int gV = bi.get(row, i, 0);
-                    int bV = bi.get(row, i, 0);
+                    int gV = bi.get(row, i, 1);
+                    int bV = bi.get(row, i, 2);
                     if (rV >= gV && rV >= bV) r2++;
                     else if (gV >= bV) g2++;
                     else b2++;
@@ -75,6 +74,13 @@ public class AutonCameraTestOpMode extends OpMode {
                 else if (g2 >= b2) rS = "G";
                 else rS = "B";
                 state = lS + rS;
+                ((Activity) AutonCameraTestOpMode.this.hardwareMap.appContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv.setText(state);
+                    }
+                });
+                Log.i("STATE", state);
             }
 
             @Override
@@ -97,11 +103,6 @@ public class AutonCameraTestOpMode extends OpMode {
 
     @Override
     public void loop() {
-        ((Activity) this.hardwareMap.appContext).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tv.setText(state);
-            }
-        });
+
     }
 }
