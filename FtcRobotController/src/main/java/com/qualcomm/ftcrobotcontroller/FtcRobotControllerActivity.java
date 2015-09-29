@@ -164,26 +164,7 @@ public class FtcRobotControllerActivity extends Activity {
 
     if (USE_DEVICE_EMULATION) { ModernRoboticsHardwareFactory.enableDeviceEmulation(); }
 
-    OpenCvActivityHelper ocvh = new OpenCvActivityHelper(this);
-    ocvh.addCallback(new OpenCvActivityHelper.MatCallback() {
-      @Override
-      public void handleMat(opencv_core.Mat mat) {
-        Log.i("FRAME", "Processed a frame");
-        try {
-          Thread.sleep(100); // imitate long process
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-      }
 
-      @Override
-      public void draw(Canvas canvas) {
-        Paint p = new Paint();
-        p.setColor(Color.GREEN);
-        canvas.drawCircle(10,10,4,p);
-      }
-    });
-    ocvh.attach();
   }
 
   @Override

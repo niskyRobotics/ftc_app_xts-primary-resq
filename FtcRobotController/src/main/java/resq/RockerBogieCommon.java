@@ -1,4 +1,4 @@
-package ftc.team6460.resq;
+package resq;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;

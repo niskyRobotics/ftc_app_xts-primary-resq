@@ -34,11 +34,11 @@ public class OpenCvActivityHelper {
 
 static volatile boolean running;
 
-    public void addCallback(MatCallback cb){
+    public synchronized void addCallback(MatCallback cb){
         callbacks.add(cb);
     }
 
-    public void removeCallback(MatCallback cb){
+    public synchronized void removeCallback(MatCallback cb){
         callbacks.remove(cb);
     }
 
@@ -92,7 +92,7 @@ static volatile boolean running;
         this.cx = cx;
     }
 
-    public void attach() {
+    public synchronized void attach() {
 
 //        // Hide the window title.
 
@@ -187,11 +187,11 @@ static volatile boolean running;
             //1620 for YUV NV21
             if (yuvImage == null || yuvImage.arrayWidth() != width || yuvImage.arrayHeight() != height + (height/2)) {
                 Log.i("PREPROC", "Remaking yuv");
-                yuvImage.create(height + (height/2), width, CV_8UC1);
+                yuvImage.create(height + (height/2), width, CV_8UC3);
             }
             if (rgbImage == null || rgbImage.arrayWidth() != width || rgbImage.arrayHeight() != height) {
                 Log.i("PREPROC", "Remaking rgbImage: Currently " + rgbImage.arrayWidth() + "*" + rgbImage.arrayHeight());
-                rgbImage.create(height, width, CV_8UC1);
+                rgbImage.create(height, width, CV_8UC3);
             }
 
 

@@ -1,9 +1,7 @@
-package ftc.team6460.resq;
+package resq;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import ftc.team6460.javadeck.ftc.Utils;
 
 /**
  * Created by hexafraction on 9/26/15.

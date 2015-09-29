@@ -29,31 +29,12 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-package org.ftc.opmodes;
+package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import android.app.Application;
-import android.content.Context;
-import android.util.Log;
-
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
-
-import org.ftccommunity.ftcxtensible.opmodes.Autonomous;
-import org.ftccommunity.ftcxtensible.opmodes.Disabled;
-import org.ftccommunity.ftcxtensible.opmodes.TeleOp;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.TreeMap;
-
-import dalvik.system.DexFile;
+import resq.AutonCameraTestOpMode;
+import resq.RockerBogieTeleop;
 
 /**
  * @author David Sargent - FTC5395, maths222, Qualcomm
@@ -71,7 +52,8 @@ public class FallbackOpModeRegister implements OpModeRegister {
     @Override
     public void register(final OpModeManager mgr) {
         // Add your hardcoded OpModes here
-        mgr.register("twoMotorTelopTest", QuickTestTeleop.class);
+        mgr.register("twoMotorTelopTest", RockerBogieTeleop.class);
+        mgr.register("camTest", AutonCameraTestOpMode.class);
         // Please note that this executes immediately right now
     }
 }
