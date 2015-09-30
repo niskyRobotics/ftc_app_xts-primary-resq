@@ -73,6 +73,7 @@ import ftc.team6460.javadeck.ftc.vision.MatCallback;
 import ftc.team6460.javadeck.ftc.vision.OpenCvActivityHelper;
 import org.bytedeco.javacpp.indexer.UByteBufferIndexer;
 import org.bytedeco.javacpp.opencv_core;
+import resq.MatColorSpreadCallback;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -152,7 +153,23 @@ public class FtcRobotControllerActivity extends Activity {
         dimmer = new Dimmer(this);
         dimmer.longBright();
         Restarter restarter = new RobotRestarter();
-
+//        ((Button) findViewById(R.id.btnStartVideo)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                tv = new TextView(FtcRobotControllerActivity.this);
+//                final OpenCvActivityHelper ocvh = new OpenCvActivityHelper(FtcRobotControllerActivity.this);
+//                ocvh.addCallback(new MatColorSpreadCallback(FtcRobotControllerActivity.this, tv));
+//                tv = new TextView(FtcRobotControllerActivity.this);
+//                ((Activity) FtcRobotControllerActivity.this).runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        ocvh.attach();
+//                        ((FrameLayout)findViewById(R.id.previewLayout)).addView(tv);
+//                    }
+//                });
+//            }
+//        });
         updateUI = new UpdateUI(this, dimmer);
         updateUI.setRestarter(restarter);
         updateUI.setTextViews(textWifiDirectStatus, textRobotStatus,

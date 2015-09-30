@@ -18,6 +18,7 @@ import ftc.team6460.javadeck.ftc.vision.OpenCvLegacyActivity;
 import org.bytedeco.javacpp.indexer.UByteBufferIndexer;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_imgproc;
+import resq.MatColorSpreadCallback;
 
 import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_imgproc.*;
@@ -51,64 +52,7 @@ public class OpenCvHelperTestActivity extends Activity {
             @Override
             public synchronized void onClick(View view) {
                 Log.e("A", "CLICKED");
-                OpenCvLegacyActivity.addCallback(new MatCallback() {
-                    opencv_core.CvMemStorage str = opencv_core.cvCreateMemStorage();
-                    opencv_core.Mat gray = new opencv_core.Mat();
-                    opencv_core.Mat grayHalf = new opencv_core.Mat();
-                    double canny = getCanny();
-                    double ctr = getCentre();
-                    int div = getDiv();
-                    opencv_core.CvSeq circles;
-
-                    @Override
-                    public synchronized void handleMat(opencv_core.Mat mat) {
-                        UByteBufferIndexer bi = mat.createIndexer(); // JNI call to get access to the image pixels
-                        int row = mat.rows() / 2; // find middle row
-                        int cols = mat.cols();
-                        int r = 0, g = 0, b = 0;
-                        for (int i = 0; i < cols / 2; i += 8) { // for each pixel in left: Find if more red, green, or blue
-                            int rV = bi.get(row, i, 0);
-                            int gV = bi.get(row, i, 1);
-                            int bV = bi.get(row, i, 2);
-                            Log.d("col", String.format("%d %d %d", rV, gV, bV));
-                            if (rV >= gV && rV >= bV) r++;
-                            else if (gV >= bV) g++;
-                            else b++;
-                        }
-                        int r2 = 0, g2 = 0, b2 = 0;
-                        for (int i = cols / 2; i < cols; i += 8) { // same thing for right side
-                            int rV = bi.get(row, i, 0);
-                            int gV = bi.get(row, i, 1);
-                            int bV = bi.get(row, i, 2);
-                            if (rV >= gV && rV >= bV) r2++;
-                            else if (gV >= bV) g2++;
-                            else b2++;
-                        }
-
-                        String lS;
-                        String rS;
-                        // now "vote" on each side. Simple comparisons
-                        if (r >= g && r >= b) lS = "R";
-                        else if (g >= b) lS = "G";
-                        else lS = "B";
-                        Log.i("col", String.format("%d %d %d / %d %d %d", r, g, b, r2, g2, b2));
-                        if (r2 >= g2 && r2 >= b2) rS = "R";
-                        else if (g2 >= b2) rS = "G";
-                        else rS = "B";
-                        state = lS + rS;
-                        Log.i("STATE", state);
-                    }
-
-                    @Override
-                    public synchronized void draw(Canvas canvas) {
-                        if (circles == null) return;
-                        Paint p = new Paint();
-                        p.setStrokeWidth(4);
-                        p.setStyle(Paint.Style.STROKE);
-                        p.setColor(Color.GREEN);
-                        canvas.drawText(state, 200, 200, p);
-                    }
-                });
+                OpenCvLegacyActivity.addCallback(new MatColorSpreadCallback(OpenCvHelperTestActivity.this,null));
 
 
                 ftc.team6460.javadeck.ftc.vision.OpenCvLegacyActivity.startActivity(OpenCvHelperTestActivity.this);
