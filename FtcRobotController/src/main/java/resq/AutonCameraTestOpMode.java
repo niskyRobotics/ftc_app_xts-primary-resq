@@ -19,6 +19,8 @@ import org.bytedeco.javacpp.indexer.UByteBufferIndexer;
 import org.bytedeco.javacpp.opencv_core;
 import org.ftccommunity.ftcxtensible.opmodes.Autonomous;
 
+import java.util.Arrays;
+
 /**
  * Created by akh06977 on 9/18/2015.
  */
@@ -43,36 +45,47 @@ public class AutonCameraTestOpMode extends OpMode {
                 UByteBufferIndexer bi = mat.createIndexer(); // JNI call to get access to the image pixels
                 int row = mat.rows() / 2; // find middle row
                 int cols = mat.cols();
-                int r = 0, g = 0, b = 0;
+                int rT = 0, gT = 0, bT = 0;
+
+                int mTotal = 0;
+                float[] hsv = new float[3];
                 for (int i = 0; i < cols / 2; i += 8) { // for each pixel in left: Find if more red, green, or blue
-                    int rV = bi.get(row, i, 0);
-                    int gV = bi.get(row, i, 1);
-                    int bV = bi.get(row, i, 2);
-                    Log.d("col", String.format("%d %d %d", rV, gV, bV));
-                    if (rV >= gV && rV >= bV) r++;
-                    else if (gV >= bV) g++;
-                    else b++;
-                }
-                int r2 = 0, g2 = 0, b2 = 0;
-                for (int i = cols / 2; i < cols; i += 8) { // same thing for right side
-                    int rV = bi.get(row, i, 0);
-                    int gV = bi.get(row, i, 1);
-                    int bV = bi.get(row, i, 2);
-                    if (rV >= gV && rV >= bV) r2++;
-                    else if (gV >= bV) g2++;
-                    else b2++;
+                    int mul = Math.min(i, cols / 2 - i);
+                    rT += bi.get(row, i, 0)*mul;
+                    gT += bi.get(row, i, 1)*mul;
+                    bT += bi.get(row, i, 2)*mul;
+                    mTotal += mul;
+
                 }
 
                 String lS;
-                String rS;
-                // now "vote" on each side. Simple comparisons
-                if (r >= g && r >= b) lS = "R";
-                else if (g >= b) lS = "G";
+                Color.RGBToHSV(rT / mTotal, gT / mTotal, bT / mTotal, hsv);
+                if(hsv[0]<(60) || hsv[0]>(300)) lS = "R";
+                else if(hsv[0]<(180)) lS = "G";
                 else lS = "B";
-                Log.i("col", String.format("%d %d %d / %d %d %d", r, g, b, r2, g2, b2));
-                if (r2 >= g2 && r2 >= b2) rS = "R";
-                else if (g2 >= b2) rS = "G";
+                Log.v("CLRAW", String.format("%d,%d,%d",rT / mTotal, gT / mTotal, bT / mTotal));
+                Log.v("CL", String.format(Arrays.toString(hsv)));
+
+
+                int rT2 = 0, gT2 = 0, bT2 = 0;
+                int mTotal2 = 0;
+                for (int i = cols/2; i < cols; i += 8) { // for each pixel in left: Find if more red, green, or blue
+                    int mul = Math.min(i - cols / 2, cols - i);
+                    rT2 += bi.get(row, i, 0)*mul;
+                    gT2 += bi.get(row, i, 1)*mul;
+                    bT2 += bi.get(row, i, 2)*mul;
+                    mTotal2 += mul;
+
+                }
+
+                String rS;
+                float[] hsv2 = new float[3];
+                Color.RGBToHSV(rT2 / mTotal2, gT2 / mTotal2, bT2 / mTotal2, hsv2);
+                if(hsv2[0]<(60) || hsv2[0]>(300)) rS = "R";
+                else if(hsv2[0]<(180)) rS = "G";
                 else rS = "B";
+                Log.v("CRRAW", String.format("%d,%d,%d",rT2 / mTotal2, gT2 / mTotal2, bT2 / mTotal2));
+                Log.v("CR", String.format(Arrays.toString(hsv)));
                 state = lS + rS;
                 ((Activity) AutonCameraTestOpMode.this.hardwareMap.appContext).runOnUiThread(new Runnable() {
                     @Override

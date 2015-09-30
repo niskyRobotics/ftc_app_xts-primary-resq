@@ -261,6 +261,11 @@ public class OpenCvActivityHelper {
             }
 
             mCamera = Camera.open(mCID);
+            Camera.Parameters cParam = mCamera.getParameters();
+            cParam.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_SHADE);
+            cParam.setAutoExposureLock(true);
+            cParam.setAutoWhiteBalanceLock(true);
+            mCamera.setParameters(cParam);
             OpenCvActivityHelper.setCameraDisplayOrientation((Activity) this.getContext(), mCID, mCamera);
             try {
                 mCamera.setPreviewDisplay(holder);

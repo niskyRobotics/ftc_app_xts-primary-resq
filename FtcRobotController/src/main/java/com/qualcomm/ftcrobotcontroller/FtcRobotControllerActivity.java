@@ -195,65 +195,65 @@ public class FtcRobotControllerActivity extends Activity {
             }
         });
 
-        final OpenCvActivityHelper ocvh = new OpenCvActivityHelper(FtcRobotControllerActivity.this);
-        ocvh.addCallback(new MatCallback() { // rdepend callback
-            @Override
-            public void handleMat(opencv_core.Mat mat) { //called on every frame
-                UByteBufferIndexer bi = mat.createIndexer(); // JNI call to get access to the image pixels
-                int row = mat.rows() / 2; // find middle row
-                int cols = mat.cols();
-                int r = 0, g = 0, b = 0;
-                for (int i = 0; i < cols / 2; i += 8) { // for each pixel in left: Find if more red, green, or blue
-                    int rV = bi.get(row, i, 0);
-                    int gV = bi.get(row, i, 1);
-                    int bV = bi.get(row, i, 2);
-                    Log.d("col", String.format("%d %d %d", rV, gV, bV));
-                    if (rV >= gV && rV >= bV) r++;
-                    else if (gV >= bV) g++;
-                    else b++;
-                }
-                int r2 = 0, g2 = 0, b2 = 0;
-                for (int i = cols / 2; i < cols; i += 8) { // same thing for right side
-                    int rV = bi.get(row, i, 0);
-                    int gV = bi.get(row, i, 1);
-                    int bV = bi.get(row, i, 2);
-                    if (rV >= gV && rV >= bV) r2++;
-                    else if (gV >= bV) g2++;
-                    else b2++;
-                }
-
-                String lS;
-                String rS;
-                // now "vote" on each side. Simple comparisons
-                if (r >= g && r >= b) lS = "R";
-                else if (g >= b) lS = "G";
-                else lS = "B";
-                Log.i("col", String.format("%d %d %d / %d %d %d", r, g, b, r2, g2, b2));
-                if (r2 >= g2 && r2 >= b2) rS = "R";
-                else if (g2 >= b2) rS = "G";
-                else rS = "B";
-                final String state = lS + rS;
-                FtcRobotControllerActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tv.setText(state);
-                    }
-                });
-
-                Log.i("STATE", state);
-            }
-
-            @Override
-            public void draw(Canvas canvas) {
-                Paint p = new Paint();
-                p.setColor(Color.GREEN);
-                canvas.drawCircle(10, 10, 4, p);
-            }
-        });
-        tv = new TextView(this);
-
-        ocvh.attach();
-        ((FrameLayout) ((Activity) FtcRobotControllerActivity.this).findViewById(R.id.previewLayout)).addView(tv);
+//        final OpenCvActivityHelper ocvh = new OpenCvActivityHelper(FtcRobotControllerActivity.this);
+//        ocvh.addCallback(new MatCallback() { // rdepend callback
+//            @Override
+//            public void handleMat(opencv_core.Mat mat) { //called on every frame
+//                UByteBufferIndexer bi = mat.createIndexer(); // JNI call to get access to the image pixels
+//                int row = mat.rows() / 2; // find middle row
+//                int cols = mat.cols();
+//                int r = 0, g = 0, b = 0;
+//                for (int i = 0; i < cols / 2; i += 8) { // for each pixel in left: Find if more red, green, or blue
+//                    int rV = bi.get(row, i, 0);
+//                    int gV = bi.get(row, i, 1);
+//                    int bV = bi.get(row, i, 2);
+//                    Log.d("col", String.format("%d %d %d", rV, gV, bV));
+//                    if (rV >= gV && rV >= bV) r++;
+//                    else if (gV >= bV) g++;
+//                    else b++;
+//                }
+//                int r2 = 0, g2 = 0, b2 = 0;
+//                for (int i = cols / 2; i < cols; i += 8) { // same thing for right side
+//                    int rV = bi.get(row, i, 0);
+//                    int gV = bi.get(row, i, 1);
+//                    int bV = bi.get(row, i, 2);
+//                    if (rV >= gV && rV >= bV) r2++;
+//                    else if (gV >= bV) g2++;
+//                    else b2++;
+//                }
+//
+//                String lS;
+//                String rS;
+//                // now "vote" on each side. Simple comparisons
+//                if (r >= g && r >= b) lS = "R";
+//                else if (g >= b) lS = "G";
+//                else lS = "B";
+//                Log.i("col", String.format("%d %d %d / %d %d %d", r, g, b, r2, g2, b2));
+//                if (r2 >= g2 && r2 >= b2) rS = "R";
+//                else if (g2 >= b2) rS = "G";
+//                else rS = "B";
+//                final String state = lS + rS;
+//                FtcRobotControllerActivity.this.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        tv.setText(state);
+//                    }
+//                });
+//
+//                Log.i("STATE", state);
+//            }
+//
+//            @Override
+//            public void draw(Canvas canvas) {
+//                Paint p = new Paint();
+//                p.setColor(Color.GREEN);
+//                canvas.drawCircle(10, 10, 4, p);
+//            }
+//        });
+//        tv = new TextView(this);
+//
+//        ocvh.attach();
+//        ((FrameLayout) ((Activity) FtcRobotControllerActivity.this).findViewById(R.id.previewLayout)).addView(tv);
     }
 
 
