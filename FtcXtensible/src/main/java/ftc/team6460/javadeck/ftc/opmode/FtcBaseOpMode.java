@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by hexafraction on 6/11/15.
+ * Base class for ftc
  */
 public abstract class FtcBaseOpMode extends SynchronousOpMode implements Maintainer {
     private final Set<Maintainable> toMaintain = new HashSet<>();

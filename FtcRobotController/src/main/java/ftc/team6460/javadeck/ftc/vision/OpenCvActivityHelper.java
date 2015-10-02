@@ -93,9 +93,6 @@ public class OpenCvActivityHelper {
 
     public synchronized void attach() {
 
-//        // Hide the window title.
-
-        // Create our Preview view and set it as the content of our activity.
         try {
 
             layout = new FrameLayout(cx);

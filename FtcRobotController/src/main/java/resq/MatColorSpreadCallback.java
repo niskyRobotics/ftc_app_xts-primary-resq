@@ -25,6 +25,7 @@ public class MatColorSpreadCallback implements MatCallback {
         this.tv = tv;
     }  // rdepend callback
 
+
     @Override
     public void handleMat(opencv_core.Mat mat) { //called on every frame
         UByteBufferIndexer bi = mat.createIndexer(); // JNI call to get access to the image pixels
@@ -33,8 +34,22 @@ public class MatColorSpreadCallback implements MatCallback {
         double xT = 0, yT = 0;
         float[] hsv = new float[3];
         int mTotal = 0;
-        for (int i = 0; i < cols / 2; i += 8) { // for each pixel in left: Find if more red, green, or blue
+
+        // see K&R stats 3rd edition page 878
+        // center oriented weight
+        // statistics to find mean only, not s-err value for this data sample
+        // stdev requires additional trig and a second pass
+
+        /* Weighting
+
+                   *   C   *
+                *****  T  ******
+            ***********R***********
+         */
+
+        for (int i = 0; i < cols / 2; i += 8) { // for each pixel in left: Add unitized vector to vecsum
             int mul = Math.min(i, (cols / 2 - i) * 3);
+            //convert RGB to HSV
             Color.RGBToHSV(bi.get(row, i, 0), bi.get(row, i, 1), bi.get(row, i, 2), hsv);
             if (hsv[2] > 0.1 && hsv[1] > 0.1) {
                 xT += Math.cos(Math.toRadians(hsv[0])) * mul;
@@ -51,7 +66,7 @@ public class MatColorSpreadCallback implements MatCallback {
         else lS = "R";
         Log.v("CLRES", String.format("theta: %f rad: %f samples: %d", theta, Math.hypot(yT / mTotal, xT / mTotal), mTotal));
 
-
+        // repeat for other side.
         xT = 0;
         yT = 0;
         mTotal = 0;
@@ -84,6 +99,7 @@ public class MatColorSpreadCallback implements MatCallback {
 
     @Override
     public void draw(Canvas canvas) {
+        //self explanatory
         if(state==null) return;
         Paint p = new Paint();
         switch (state.charAt(0)) {

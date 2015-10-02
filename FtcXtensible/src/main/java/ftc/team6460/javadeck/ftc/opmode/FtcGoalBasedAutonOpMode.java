@@ -7,6 +7,7 @@ import ftc.team6460.javadeck.api.planner.ImmutableRobotPosition;
 /**
  * Currently assumes names DRIVE_L and DRIVE_R, with 1 unit/sec/power, 1 unit width
  */
+@Deprecated
 public class FtcGoalBasedAutonOpMode extends FtcBaseOpMode {
 
     private final ImmutableRobotPosition currentPosition;

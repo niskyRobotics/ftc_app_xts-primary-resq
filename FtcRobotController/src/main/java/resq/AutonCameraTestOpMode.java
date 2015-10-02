@@ -27,12 +27,14 @@ public class AutonCameraTestOpMode extends OpMode {
     @Override
     public void init() {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this.hardwareMap.appContext);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this.hardwareMap.appContext); // obtain pref softref
         scaledPower = Utils.getSafeDoublePref("lowspeed_power_scale", sharedPref, 0.50);
         this.gamepad1.setJoystickDeadzone(0.1f);
         ocvh = new OpenCvActivityHelper((FtcRobotControllerActivity) hardwareMap.appContext);
         ocvh.addCallback(new MatColorSpreadCallback((FtcRobotControllerActivity) hardwareMap.appContext, tv));
         tv = new TextView(hardwareMap.appContext);
+
+        // start color scan
         ((Activity) this.hardwareMap.appContext).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -45,11 +47,15 @@ public class AutonCameraTestOpMode extends OpMode {
 
     @Override
     public void loop() {
+        //nullop
 
+        //self explanatory
     }
 
     @Override
     public void stop() {
+
+        //self explanatory
         ocvh.stop();
         super.stop();
     }

@@ -65,8 +65,9 @@ public class RockerBogieTeleop extends RockerBogieCommon {
 
     @Override
     public void loop() {
-        double scaleActual = (this.gamepad1.right_trigger>0.2)?scaledPower:1.00;
 
+        double scaleActual = (this.gamepad1.right_trigger>0.2)?scaledPower:1.00;
+        //scaling
         l0.setPower(this.gamepad1.left_stick_y * scaleActual);
         r0.setPower(this.gamepad1.right_stick_y * scaleActual);
 
@@ -76,6 +77,7 @@ public class RockerBogieTeleop extends RockerBogieCommon {
         l2.setPower(this.gamepad1.left_stick_y * scaleActual);
         r2.setPower(this.gamepad1.right_stick_y * scaleActual);
 
+        //self explanatory winch
         if(this.gamepad1.left_bumper) {
             w.setPower(1.0);
             telemetry.addData("w", "1");
