@@ -99,7 +99,7 @@ public class MatColorSpreadCallback implements MatCallback {
             default:
                 p.setColor(Color.YELLOW);
         }
-        canvas.drawRect(0, 0, canvas.getWidth()/2, 40, p);
+        canvas.drawRect(0, 0, canvas.getWidth()/2, canvas.getHeight() / 16, p);
         switch (state.charAt(1)) {
             case 'R':
                 p.setColor(Color.RED);
@@ -113,6 +113,6 @@ public class MatColorSpreadCallback implements MatCallback {
             default:
                 p.setColor(Color.YELLOW);
         }
-        canvas.drawRect(canvas.getWidth()/2, 0, canvas.getWidth(), 40, p);
+        canvas.drawRect(canvas.getWidth()/2, 0, canvas.getWidth(), canvas.getHeight() / 16, p);
     }
 }

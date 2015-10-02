@@ -7,12 +7,15 @@ import android.graphics.Canvas;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.util.Log;
-import android.view.*;
+import android.view.Surface;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.View;
 import android.widget.FrameLayout;
 import com.qualcomm.ftcrobotcontroller.FtcRobotControllerActivity;
 import com.qualcomm.ftcrobotcontroller.R;
-import org.bytedeco.javacpp.*;
-
+import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacpp.opencv_imgproc;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -32,6 +35,7 @@ public class OpenCvActivityHelper {
     CopyOnWriteArraySet<MatCallback> callbacks = new CopyOnWriteArraySet<>();
 
     static volatile boolean running;
+    private static int degrees;
 
     public synchronized void addCallback(MatCallback cb) {
         callbacks.add(cb);
@@ -51,7 +55,7 @@ public class OpenCvActivityHelper {
         android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
         android.hardware.Camera.getCameraInfo(cameraId, info);
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-        int degrees = 0;
+        degrees = 0;
         switch (rotation) {
             case Surface.ROTATION_0:
                 degrees = 0;
@@ -66,7 +70,7 @@ public class OpenCvActivityHelper {
                 degrees = 270;
                 break;
         }
-
+        Log.e("ROT", Integer.toString(degrees));
         int result;
         if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             result = (info.orientation + degrees) % 360;
@@ -195,13 +199,28 @@ public class OpenCvActivityHelper {
             }
             opencv_imgproc.cvtColor(yuvImage, rgbImage, opencv_imgproc.COLOR_YUV2RGB_NV21);
 
+            //90 is already OK
+            if (degrees == 0) {
+                transpose(rgbImage, rgbImage);
+                flip(rgbImage, rgbImage, 1);
+            } else if (degrees == 270) {
+                flip(rgbImage, rgbImage, -1);
+            } else if (degrees == 180) {
+                transpose(rgbImage, rgbImage);
+                flip(rgbImage, rgbImage, 0);
+            }
             for (MatCallback cb : OpenCvActivityHelper.this.callbacks) {
                 cb.handleMat(rgbImage);
             }
-
+            if (degrees == 0) {
+                transpose(rgbImage, rgbImage);
+            }  else if (degrees == 180) {
+                transpose(rgbImage, rgbImage);
+            }
             cvClearMemStorage(storage);
             postInvalidate();
         }
+
         public String status = "";
 
         @Override
@@ -285,8 +304,6 @@ public class OpenCvActivityHelper {
             // Surface will be destroyed when we return, so stop the preview.
             // Because the CameraDevice object is not a shared resource, it's very
             // important to release it when the activity is paused.
-            mCamera.stopPreview();
-
             mCamera.release();
 
             mCamera = null;
@@ -351,6 +368,18 @@ public class OpenCvActivityHelper {
             mCamera.startPreview();
         }
 
+    }
+
+    public void stop() {
+        faceView.run = false;
+        mPreview.mCamera.stopPreview();
+        mPreview.mCamera.release();
+        cx.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((FrameLayout) cx.findViewById(R.id.previewLayout)).removeView(layout);
+            }
+        });
     }
 }
 
