@@ -62,12 +62,19 @@
         android:textSize="18sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/servo_controller_name"
+        android:text="CDIM"
         android:inputType="text"
         android:maxLength="200"
         android:hint="@string/name_prompt_text">
       </EditText>
-
+      <TextView
+              android:id="@+id/device_interface_module_serialNumber"
+              android:textStyle="bold"
+              android:textSize="22sp"
+              android:paddingRight="5dp"
+              android:paddingEnd="5dp"
+              android:paddingLeft="5dp"
+              android:text="SERNUM" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
     <ListView
       android:id="@+id/listView_devices"
       android:layout_width="fill_parent"

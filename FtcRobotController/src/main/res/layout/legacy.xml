@@ -325,6 +325,21 @@
             <View
                 android:layout_height="2dip"
                 android:background="#FF0000" />
+            <TableRow
+                    android:id="@+id/row_serial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dip" >
+                <TextView
+                        android:id="@+id/legacy_serialNumber"
+                        android:textStyle="bold"
+                        android:textSize="22sp"
+                        android:paddingRight="5dp"
+                        android:paddingEnd="5dp"
+                        android:paddingLeft="5dp"
+                        android:text="SERNUM"/>
+
+            </TableRow>
 
         </TableLayout>
     </LinearLayout>
